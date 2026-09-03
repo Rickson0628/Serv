@@ -28,27 +28,27 @@ body {
 }
 
 .text-logo {
-  @apply text-primary font-extrabold text-3xl;
+  @apply text-primary font-extrabold text-[clamp(1.75rem,2.2vw,2.25rem)];
 }
 
 .text-heading {
-  @apply text-3xl font-bold;
+  @apply font-bold text-[clamp(1.75rem,2.8vw,2.5rem)];
 }
 
 .text-subtitle {
-  @apply text-lg font-semibold;
+  @apply font-semibold text-[clamp(1.1rem,1.6vw,1.4rem)];
 }
 
 .text-body {
-  @apply text-base font-normal;
+  @apply font-normal text-[clamp(0.9rem,1vw,1rem)];
 }
 
 .text-label {
-  @apply text-sm font-semibold;
+  @apply font-semibold text-[clamp(0.8rem,0.9vw,0.95rem)];
 }
 
 .btn-primary{
-  @apply bg-primary px-4 py-3 rounded-sm text-white;
+  @apply bg-primary px-4 py-3 rounded-sm text-white text-[clamp(0.9rem,1vw,1rem)];
 }
 
 .text-label{
