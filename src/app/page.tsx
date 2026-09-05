@@ -2,6 +2,7 @@ import Navbar from "@/components/layout/Navbar";
 import ServiceCategories from "@/components/home/ServiceCategories";
 import ServiceSection from "@/components/home/ServiceSection";
 import Offer from "@/components/home/Offer";
+import Footer from "@/components/layout/Footer";
 
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
       <ServiceCategories />
       <ServiceSection title="Work when you want, make what you need" description="Are you a licensed auto mechanic, windshield repair expert, or auto detailing expert?" buttonText="Start Now" image="/home/SecondLandingPagePicture.png"  imagePosition="left" />
       <Offer />
+      <Footer />
 
     </section>
    

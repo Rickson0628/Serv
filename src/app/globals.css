@@ -26,6 +26,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* texts */
 
 .text-logo {
   @apply text-primary font-extrabold text-[clamp(1.75rem,2.2vw,2.25rem)];
@@ -47,7 +48,9 @@ body {
   @apply font-semibold text-[clamp(0.8rem,0.9vw,0.95rem)];
 }
 
+/* buttons */
+
 .btn-primary{
-  @apply bg-primary px-4 py-3 rounded-sm text-white text-[clamp(0.9rem,1vw,1rem)];
+  @apply bg-primary px-4 py-3 rounded-sm text-white text-[clamp(0.9rem,1vw,1rem)] transition-transform hover:scale-105 ;
 }
 
