@@ -2,55 +2,235 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --primary: #007AFF;
+  --foreground: #111827;
+  --primary: #007aff;
+  --muted: #64748b;
+  --section-background: #f8fafc;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-muted: var(--muted);
+  --color-section: var(--section-background);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --color-primary: var(--primary)
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* --background: #0a0a0a;
-    --foreground: #ededed; */
-  }
-}
+/* =========================
+   BODY
+   ========================= */
 
+/* Main website background, text color, and font */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
-/* texts */
 
+
+/* =========================
+   TEXTS - MOBILE DEFAULT
+   ========================= */
+
+/* Use for the Serv logo/brand name */
 .text-logo {
-  @apply text-primary font-extrabold text-[clamp(1.75rem,2.2vw,2.25rem)];
+  @apply text-primary font-extrabold text-[1.75rem] tracking-tight;
 }
 
+/* Use for main page or major section headings */
 .text-heading {
-  @apply font-bold text-[clamp(1.75rem,2.8vw,2.5rem)];
+  @apply font-extrabold
+  text-[2.25rem]
+  leading-[1.05]
+  tracking-tight;
 }
 
+/* Use for smaller headings, card titles, or section subtitles */
 .text-subtitle {
-  @apply font-semibold text-[clamp(1.1rem,1.6vw,1.4rem)];
+  @apply font-bold
+  text-[1.25rem]
+  leading-tight;
 }
 
+/* Use for regular paragraphs and descriptions */
 .text-body {
-  @apply font-normal text-[clamp(0.9rem,1vw,1rem)];
+  @apply font-normal
+  text-[0.95rem]
+  leading-relaxed;
 }
 
+/* Use for form labels or small important text */
 .text-label {
-  @apply font-semibold text-[clamp(0.8rem,0.9vw,0.95rem)];
+  @apply font-semibold
+  text-[0.85rem];
 }
 
-/* buttons */
-
-.btn-primary{
-  @apply bg-primary px-4 py-3 rounded-sm text-white text-[clamp(0.9rem,1vw,1rem)] transition-transform hover:scale-105 ;
+/* Use for small text above a major heading */
+.text-eyebrow {
+  @apply text-[0.7rem]
+  font-bold
+  uppercase
+  tracking-[0.2em]
+  text-slate-500;
 }
 
+/* Use with body text when you want it less visually prominent */
+.text-muted {
+  @apply text-slate-600;
+}
+
+/* Use for large numbers or statistics */
+.text-stat {
+  @apply font-extrabold
+  text-[1.4rem]
+  leading-none;
+}
+
+/* Use below a statistic to describe what the number represents */
+.text-stat-label {
+  @apply text-[0.75rem]
+  text-slate-500
+  leading-snug;
+}
+
+
+/* =========================
+   TABLET / DESKTOP TEXTS
+   ========================= */
+
+/* Automatically makes the text classes larger on tablet and desktop */
+@media (min-width: 768px) {
+  .text-logo {
+    @apply text-[clamp(2rem,2.2vw,2.5rem)];
+  }
+
+  .text-heading {
+    @apply text-[clamp(2.75rem,4vw,4rem)]
+    leading-[1.02];
+  }
+
+  .text-subtitle {
+    @apply text-[clamp(1.25rem,1.6vw,1.6rem)];
+  }
+
+  .text-body {
+    @apply text-[clamp(0.95rem,1.05vw,1.1rem)];
+  }
+
+  .text-label {
+    @apply text-[clamp(0.85rem,0.9vw,1rem)];
+  }
+
+  .text-eyebrow {
+    @apply text-[clamp(0.7rem,0.75vw,0.8rem)];
+  }
+
+  .text-stat {
+    @apply text-[clamp(1.4rem,1.8vw,1.8rem)];
+  }
+
+  .text-stat-label {
+    @apply text-[clamp(0.75rem,0.8vw,0.9rem)];
+  }
+}
+
+
+/* =========================
+   BUTTONS
+   ========================= */
+
+/* Use for the main action on a page or section */
+.btn-primary {
+  @apply bg-primary
+  text-white
+  font-semibold
+  px-8
+  py-3
+  rounded-md
+  text-[0.9rem]
+  flex
+  items-center
+  justify-center
+  transition-all
+  duration-200
+  hover:scale-105
+  hover:brightness-95;
+}
+
+/* Use for a secondary action beside the primary button */
+.btn-secondary {
+  @apply bg-white
+  text-primary
+  border
+  border-primary
+  font-semibold
+  px-6
+  py-3
+  rounded-md
+  text-[0.9rem]
+  flex
+  items-center
+  justify-center
+  transition-all
+  duration-200
+  hover:bg-blue-50;
+}
+
+/* Makes button text responsive on tablet and desktop */
+@media (min-width: 768px) {
+  .btn-primary,
+  .btn-secondary {
+    @apply text-[clamp(0.9rem,1vw,1rem)];
+  }
+}
+
+
+/* =========================
+   LINKS
+   ========================= */
+
+/* Use for links inside the footer */
+.footer-link {
+  @apply text-slate-600
+  transition-colors
+  duration-200
+  hover:text-primary;
+}
+
+
+/* =========================
+   FORM ELEMENTS
+   ========================= */
+
+/* Use for inputs, textareas, and similar form fields */
+.form-input {
+  @apply w-full
+  border
+  border-gray-300
+  rounded-md
+  px-4
+  py-3
+  outline-none
+  transition-colors
+  focus:border-primary;
+}
+
+
+/* =========================
+   SECTION HELPERS
+   ========================= */
+
+/* Use on major page sections for consistent spacing */
+.section-padding {
+  @apply px-6 py-12;
+}
+
+/* Adds more section spacing on tablet and desktop */
+@media (min-width: 768px) {
+  .section-padding {
+    @apply px-10 py-16;
+  }
+}
