@@ -27,7 +27,7 @@ const serviceCategories: ServiceCategory[] = [
 
 const ServiceCategories = () => {
   return (
-    <section className="w-full py-6 sm:py-10 px-4 sm:px-10 bg-[#AAB2C8]">
+    <section className="w-full py-5  px-4 sm:px-10 bg-[#AAB2C8]">
 
       {/* Service Categories Container */}
       <div className="flex items-start justify-center gap-8 md:gap-20 text-white text-center">
