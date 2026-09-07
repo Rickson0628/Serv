@@ -35,7 +35,7 @@ const ServiceSection = ({
           <span className="text-primary"> {coloredTitle}</span>
         </h1>
 
-        <p className="text-body">
+        <p className="text-body text-muted">
           {description}
         </p>
 
