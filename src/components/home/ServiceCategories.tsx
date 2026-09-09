@@ -27,10 +27,10 @@ const serviceCategories: ServiceCategory[] = [
 
 const ServiceCategories = () => {
   return (
-    <section className="w-full py-5  px-4 sm:px-10 bg-[#AAB2C8]">
+    <section className="w-full py-5 shadow-xl px-4 sm:px-10 bg-[#AAB2C8]">
 
       {/* Service Categories Container */}
-      <div className="flex items-start justify-center gap-8 md:gap-20 text-white text-center">
+      <div className="flex items-start justify-center gap-8 md:gap-20 text-center">
 
         {serviceCategories.map((service) => {
           const Icon = service.icon;
@@ -39,7 +39,7 @@ const ServiceCategories = () => {
             /* Service Category */
             <div
               key={service.name}
-              className="flex flex-col items-center gap-2"
+              className="flex flex-col items-center gap-2 text-nav "
             >
               {/* Icon Container */}
               <div className="h-10 flex items-center justify-center">
@@ -47,7 +47,7 @@ const ServiceCategories = () => {
               </div>
 
               {/* Service Name */}
-              <p className="text-label font-semibold">
+              <p className="">
                 {service.name}
               </p>
             </div>
