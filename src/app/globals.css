@@ -85,6 +85,18 @@ body {
   text-primary
 }
 
+.text-nav {
+  @apply text-[clamp(0.75rem,0.75vw,0.9rem)]
+  font-bold
+  uppercase
+  tracking-[0.2em]
+  text-slate-500
+  hover:text-primary
+}
+
+
+
+
 /* Use with body text when you want it less visually prominent */
 .text-muted {
   @apply text-slate-600;
@@ -164,9 +176,49 @@ body {
   justify-center
   transition-all
   duration-200
-  hover:scale-105
+  hover:scale-101
 
   
+}
+/* Use for primary button inside navbar */
+.btn-nav-primary {
+  @apply bg-primary
+  text-white
+  flex
+  justify-center
+  items-center
+  font-bold
+  uppercase
+  tracking-[0.2em]
+  px-5
+  py-2.5
+  rounded-md
+  text-[clamp(0.75rem,0.75vw,0.9rem)]
+  transition-all
+  duration-200
+  hover:scale-101;
+}
+
+/* Use for secondary button inside navbar */
+.btn-nav-secondary {
+  @apply bg-white
+  text-slate-500
+  border
+  border-slate-300
+  font-bold
+  uppercase
+  tracking-[0.2em]
+  px-5
+  py-2.5
+  rounded-md
+  text-[clamp(0.75rem,0.75vw,0.9rem)]
+  flex
+  items-center
+  justify-center
+  transition-all
+  duration-200
+  hover:text-primary
+  hover:border-primary;
 }
 
 /* Use for a secondary action beside the primary button */
@@ -185,7 +237,9 @@ body {
   justify-center
   transition-all
   duration-200
-  hover:bg-blue-50;
+  hover:bg-blue-50
+  hover:scale-101;
+  
 }
 
 /* Makes button text responsive on tablet and desktop */
