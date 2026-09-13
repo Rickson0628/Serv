@@ -28,7 +28,7 @@ const Navbar = () => {
       <div className="hidden lg:flex w-full px-10 py-5 justify-between items-center ">
 
         {/* Logo */}
-        <Link href="/" className="text-logo">
+        <Link href="/" className="text-logo text-[clamp(2rem,2.2vw,2.5rem)]">
           Serv
         </Link>
 

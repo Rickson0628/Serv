@@ -40,7 +40,7 @@ const MobileNavbar = () => {
 
       {/* Mobile Navbar Header */}
       <div className="w-full flex items-center justify-between px-6 py-4">
-        <Link href="/" className="text-logo">
+        <Link href="/" className="text-logo  text-[clamp(2rem,2.2vw,2.5rem)]">
           Serv
         </Link>
 
