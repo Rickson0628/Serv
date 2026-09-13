@@ -1,8 +1,9 @@
 "use client";
-
+import { BsFillShieldLockFill } from "react-icons/bs"; 
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
 
 import { BsFacebook } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
@@ -16,19 +17,46 @@ import {
 
 import Button from "@/components/ui/Button";
 
+interface LoginFormData {
+  email: string;
+  password: string;
+  remember: boolean;
+}
+
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    defaultValues: {
+      email: "",
+      password: "",
+      remember: false,
+    },
+  });
+
+  function submitForm(data: LoginFormData): void {
+    // TODO: Connect login form to authentication API/backend
+    // TODO: Handle successful login and redirect user
+    // TODO: Handle invalid credentials / server errors
+    console.log(data);
+  }
 
   return (
     <section className="w-full min-h-screen">
 
       {/* Auth Header */}
       <header className="fixed top-0 left-0 z-30 px-6 py-5">
-        <Link href="/" className="text-logo text-4xl xl:text-5xl ">
+        <Link
+          href="/"
+          className="text-logo text-4xl xl:text-5xl"
+        >
           Serv
         </Link>
       </header>
-
 
       {/* Page Container */}
       <div className="min-h-screen lg:flex">
@@ -49,28 +77,24 @@ const LoginPage = () => {
           <div className="absolute inset-0 bg-black/50" />
 
           {/* Image Content */}
-        <div className="relative z-10 flex flex-col justify-end pb-20 px-12 text-white">
+          <div className="relative z-10 flex flex-col justify-end pb-20 px-12 text-white">
 
-            <span className="badge-primary w-fit mb-5">
-              Trusted Professionals
+            <span className="badge-primary w-fit mb-5 flex gap-1">
+               <BsFillShieldLockFill /> Trusted Professionals
             </span>
 
             <h1 className="text-heading max-w-xl">
-              Vehicle services made 
-              <span className="text-heading text-primary">
-              {" simple."}
-            </span>
+              Vehicle services made{" "}
+              <span className="text-primary">
+                simple.
+              </span>
             </h1>
-
-         
 
             <p className="mt-4 text-lg text-white/70">
               Real service. Real people.
             </p>
-
           </div>
         </div>
-
 
         {/* Login Section */}
         <div className="w-full lg:w-1/2 xl:w-2/5 flex flex-col min-h-screen px-6 py-6 md:px-10 lg:px-16">
@@ -89,7 +113,6 @@ const LoginPage = () => {
             </Link>
           </div>
 
-
           {/* Login Container */}
           <div className="flex-1 flex items-center justify-center">
 
@@ -106,11 +129,10 @@ const LoginPage = () => {
                 </p>
               </div>
 
-
               {/* Social Login Container */}
-              <div className="w-full flex flex-col gap-3 ">
+              <div className="w-full flex flex-col gap-3">
 
-                {/* Google Authentication */}
+                {/* TODO: Connect Google authentication */}
                 <Button
                   type="button"
                   className="btn-social"
@@ -119,7 +141,7 @@ const LoginPage = () => {
                   Continue with Google
                 </Button>
 
-                {/* Facebook Authentication */}
+                {/* TODO: Connect Facebook authentication */}
                 <Button
                   type="button"
                   className="btn-social"
@@ -128,12 +150,9 @@ const LoginPage = () => {
                     size={20}
                     className="text-blue-700"
                   />
-
                   Continue with Facebook
                 </Button>
-
               </div>
-
 
               {/* Divider */}
               <div className="w-full flex items-center gap-5 my-6">
@@ -146,9 +165,11 @@ const LoginPage = () => {
                 <div className="flex-1 h-px bg-slate-300" />
               </div>
 
-
               {/* Login Form */}
-              <form className="w-full flex flex-col gap-5">
+              <form
+                className="w-full flex flex-col gap-5"
+                onSubmit={handleSubmit(submitForm)}
+              >
 
                 {/* Email Field */}
                 <div className="flex flex-col gap-2">
@@ -166,16 +187,22 @@ const LoginPage = () => {
                     />
 
                     <input
-                      type="email"
+                      {...register("email", {
+                        required: "Email is required",
+                      })}
                       id="email"
-                      name="email"
+                      type="email"
                       placeholder="Enter your email"
                       className="form-input pl-10"
                     />
                   </div>
 
+                  {errors.email && (
+                    <span className="text-red-500 text-sm">
+                      {errors.email.message}
+                    </span>
+                  )}
                 </div>
-
 
                 {/* Password Field */}
                 <div className="flex flex-col gap-2">
@@ -193,9 +220,20 @@ const LoginPage = () => {
                     />
 
                     <input
-                      type={showPassword ? "text" : "password"}
+                      {...register("password", {
+                        required: "Password is required",
+                        minLength: {
+                          value: 8,
+                          message:
+                            "Password must be at least 8 characters",
+                        },
+                      })}
                       id="password"
-                      name="password"
+                      type={
+                        showPassword
+                          ? "text"
+                          : "password"
+                      }
                       placeholder="Enter your password"
                       className="form-input pl-10 pr-10"
                     />
@@ -203,7 +241,9 @@ const LoginPage = () => {
                     <Button
                       type="button"
                       onClick={() =>
-                        setShowPassword((prev) => !prev)
+                        setShowPassword(
+                          (prev) => !prev
+                        )
                       }
                       className="absolute right-3 top-1/2 -translate-y-1/2"
                       aria-label={
@@ -218,10 +258,14 @@ const LoginPage = () => {
                         <AiOutlineEye />
                       )}
                     </Button>
-
                   </div>
-                </div>
 
+                  {errors.password && (
+                    <span className="text-red-500 text-sm">
+                      {errors.password.message}
+                    </span>
+                  )}
+                </div>
 
                 {/* Form Options */}
                 <div className="flex items-center justify-between">
@@ -229,7 +273,7 @@ const LoginPage = () => {
                   <label className="flex items-center gap-2">
                     <input
                       type="checkbox"
-                      name="remember"
+                      {...register("remember")}
                     />
 
                     <span>
@@ -237,15 +281,14 @@ const LoginPage = () => {
                     </span>
                   </label>
 
+                  {/* TODO: Build forgot password page / reset flow */}
                   <Link
                     href="/forgot-password"
                     className="text-primary"
                   >
                     Forgot Password?
                   </Link>
-
                 </div>
-
 
                 {/* Submit Button */}
                 <Button
@@ -254,14 +297,16 @@ const LoginPage = () => {
                 >
                   Login
                 </Button>
-
               </form>
 
+              {/* TODO: Add loading state while login request is processing */}
+              {/* TODO: Disable submit button while request is processing */}
+              {/* TODO: Add user-friendly server error message */}
+              {/* TODO: Add redirect after successful login */}
+              {/* TODO: Add authentication/session handling */}
             </div>
           </div>
-
         </div>
-
       </div>
     </section>
   );
