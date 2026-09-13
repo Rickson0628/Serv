@@ -6,14 +6,9 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-white px-6 py-4 md:px-10 md:py-5">
+    <div className="min-h-screen bg-white">
 
-      {/* Auth Header */}
-      <header className="w-full ">
-        <Link href="/" className="text-logo">
-          Serv 
-        </Link>
-      </header>
+  
 
       {/* Auth Page Content */}
       <main>
