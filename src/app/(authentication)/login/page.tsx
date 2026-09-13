@@ -298,6 +298,24 @@ const LoginPage = () => {
                   Login
                 </Button>
               </form>
+               {/* Terms */}
+              <p className="text-center text-sm text-muted mt-6">
+                By continuing, you agree to our{" "}
+                <Link
+                  href="/terms"
+                  className="text-primary"
+                >
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy"
+                  className="text-primary"
+                >
+                  Privacy Policy
+                </Link>
+                .
+              </p>
 
               {/* TODO: Add loading state while login request is processing */}
               {/* TODO: Disable submit button while request is processing */}
