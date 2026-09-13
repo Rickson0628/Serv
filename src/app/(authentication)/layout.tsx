@@ -28,7 +28,7 @@ export default function AuthenticationLayout({
 
           {/* Background Image */}
           <Image
-            src="/home/LoginMechanic.png"
+            src="/authentication/LoginMechanic.png"
             alt="Mechanic showing customer a vehicle issue"
             fill
             priority

@@ -312,6 +312,18 @@ body {
   hover:text-primary;
 }
 
+.back-link {
+  @apply
+  text-primary
+  font-medium
+  flex 
+  items-center 
+  justify-center
+  gap-2
+  transition-transform
+  hover:scale-101;
+}
+
 
 /* =========================
    FORM ELEMENTS
