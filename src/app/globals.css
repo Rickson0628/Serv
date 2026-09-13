@@ -4,7 +4,7 @@
   --background: #ffffff;
   --foreground: #111827;
   --primary: #007aff;
-  --primary-soft: #BDDAFF;
+  --primary-soft: #bddaff;
   --muted: #64748b;
   --section-background: #f8fafc;
 }
@@ -44,7 +44,6 @@ body {
   text-primary
   font-extrabold
   tracking-tight;
-  
 }
 
 /* Use for main page or major section headings */
@@ -79,23 +78,23 @@ body {
   text-[0.85rem];
 }
 
-/* Use for small text above a major heading */
+/* Use for small uppercase helper text */
 .text-eyebrow {
   @apply
-  text-[0.7rem]
+  text-[0.65rem]
   font-bold
   uppercase
-  tracking-[0.2em]
+  tracking-[0.08em]
   text-slate-500;
 }
 
 /* Blue version of eyebrow text */
 .text-eyebrow-blue {
   @apply
-  text-[0.7rem]
+  text-[0.65rem]
   font-bold
   uppercase
-  tracking-[0.2em]
+  tracking-[0.08em]
   text-primary;
 }
 
@@ -137,7 +136,6 @@ body {
    TABLET / DESKTOP TEXTS
    ========================= */
 
-/* Automatically makes the text classes larger on tablet and desktop */
 @media (min-width: 768px) {
 
   .text-heading {
@@ -165,8 +163,10 @@ body {
   .text-eyebrow,
   .text-eyebrow-blue {
     @apply
-    text-[clamp(0.7rem,0.75vw,0.8rem)];
+    text-[0.75rem]
+    tracking-[0.14em];
   }
+
 
   .text-stat {
     @apply
