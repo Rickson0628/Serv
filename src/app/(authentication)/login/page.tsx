@@ -45,30 +45,30 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col px-6 py-6 md:px-10 lg:px-16">
+    <div className="auth-page">
 
       {/* Auth Prompt */}
-      <div className="pt-4 flex justify-end gap-1">
+      <div className="auth-prompt">
         <span className="text-eyebrow">
           Don&apos;t have an account?
         </span>
 
         <Link
           href="/register"
-          className="text-eyebrow-blue transition-transform hover:scale-102"
+          className="text-eyebrow-blue transition-transform hover:scale-[1.02]"
         >
           Sign up
         </Link>
       </div>
 
       {/* Login Container */}
-      <div className="flex-1 flex items-center justify-center">
+      <main className="auth-main">
 
-        <div className="w-full max-w-xl">
+        <div className="auth-card">
 
           {/* Header Container */}
-          <div className="flex flex-col items-center text-center mb-8">
-           <h1 className="font-extrabold text-3xl lg:text-4xl tracking-tight">
+          <div className="auth-header">
+           <h1 className="auth-heading">
               Welcome back
             </h1>
 
@@ -78,7 +78,7 @@ const LoginPage = () => {
           </div>
 
           {/* Social Login Container */}
-          <div className="w-full flex flex-col gap-3">
+          <div className="auth-social">
 
             {/* TODO: Connect Google authentication */}
             <Button
@@ -104,24 +104,24 @@ const LoginPage = () => {
           </div>
 
           {/* Divider */}
-          <div className="w-full flex items-center gap-5 my-6">
-            <div className="flex-1 h-px bg-slate-300" />
+          <div className="auth-divider">
+            <div className="auth-divider-line" />
 
             <span className="text-sm text-muted">
               OR
             </span>
 
-            <div className="flex-1 h-px bg-slate-300" />
+            <div className="auth-divider-line" />
           </div>
 
           {/* Login Form */}
           <form
-            className="w-full flex flex-col gap-5"
+            className="auth-form"
             onSubmit={handleSubmit(submitForm)}
           >
 
             {/* Email Field */}
-            <div className="flex flex-col gap-2">
+            <div className="form-field">
               <label
                 htmlFor="email"
                 className="text-label"
@@ -131,7 +131,7 @@ const LoginPage = () => {
 
               <div className="relative">
                 <AiOutlineMail
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  className="form-icon"
                 />
 
                 <input
@@ -141,19 +141,19 @@ const LoginPage = () => {
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="form-input pl-10"
+                  className="form-input form-input-icon"
                 />
               </div>
 
               {errors.email && (
-                <span className="text-red-500 text-sm">
+                <span className="form-error">
                   {errors.email.message}
                 </span>
               )}
             </div>
 
             {/* Password Field */}
-            <div className="flex flex-col gap-2">
+            <div className="form-field">
               <label
                 htmlFor="password"
                 className="text-label"
@@ -163,7 +163,7 @@ const LoginPage = () => {
 
               <div className="relative">
                 <AiOutlineLock
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  className="form-icon"
                 />
 
                 <input
@@ -178,7 +178,7 @@ const LoginPage = () => {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  className="form-input pl-10 pr-10"
+                  className="form-input form-input-actions"
                 />
 
                 <Button
@@ -186,7 +186,7 @@ const LoginPage = () => {
                   onClick={() =>
                     setShowPassword((prev) => !prev)
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
+                  className="form-action"
                   aria-label={
                     showPassword
                       ? "Hide password"
@@ -202,7 +202,7 @@ const LoginPage = () => {
               </div>
 
               {errors.password && (
-                <span className="text-red-500 text-sm">
+                <span className="form-error">
                   {errors.password.message}
                 </span>
               )}
@@ -264,7 +264,7 @@ const LoginPage = () => {
           {/* TODO: Redirect after successful login */}
           {/* TODO: Add authentication/session handling */}
         </div>
-      </div>
+      </main>
     </div>
   );
 };

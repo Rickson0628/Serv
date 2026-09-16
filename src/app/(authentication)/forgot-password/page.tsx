@@ -11,6 +11,8 @@ import { BiArrowBack } from "react-icons/bi";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 
+import styles from "./forgot-password.module.css";
+
 interface ForgotPasswordFormData {
   email: string;
 }
@@ -133,7 +135,7 @@ const ForgotPage = () => {
 
       {/* Forgot Password Container */}
       <main className="auth-main">
-        <div className="auth-card">
+        <div className="auth-card gap-4">
 
           {/* Header Container */}
           <div className="auth-header">
@@ -157,7 +159,7 @@ const ForgotPage = () => {
 
           {/* Email Form */}
           <form
-            className="flex w-full flex-col gap-4"
+            className="auth-form gap-4"
             onSubmit={handleSubmit(submitEmail)}
           >
             {/* Email Field */}
@@ -182,7 +184,7 @@ const ForgotPage = () => {
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="form-input pl-10"
+                  className="form-input form-input-icon"
                   aria-invalid={
                     errors.email ? "true" : "false"
                   }
@@ -222,17 +224,17 @@ const ForgotPage = () => {
       {/* Verification Modal */}
       <Modal
         isOpen={isModalOpen}
-        className="modal-backdrop"
+        className={styles.backdrop}
         role="dialog"
         aria-modal="true"
         aria-labelledby="verification-title"
       >
-        <div className="modal-card">
+        <div className={styles.dialog}>
 
           {/* Close Button */}
           <Button
             type="button"
-            className="modal-close"
+            className={styles.closeButton}
             onClick={closeModal}
             aria-label="Close verification dialog"
           >
@@ -268,10 +270,10 @@ const ForgotPage = () => {
           {/* Verification Form */}
           <form
             onSubmit={handleCodeSubmit(submitCode)}
-            className="verification-form"
+            className={styles.verificationForm}
           >
             {/* Verification Inputs */}
-            <div className="verification-inputs">
+            <div className={styles.codeInputs}>
               {Array.from({ length: 6 }, (_, index) => {
                 const {
                   ref,
@@ -300,7 +302,7 @@ const ForgotPage = () => {
                     maxLength={1}
                     autoComplete="one-time-code"
 
-                    className="verification-code-input"
+                    className={styles.codeInput}
 
                     aria-label={`Code digit ${index + 1}`}
 

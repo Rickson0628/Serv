@@ -31,6 +31,7 @@ export default function AuthenticationLayout({
             src="/authentication/LoginMechanic.png"
             alt="Mechanic showing customer a vehicle issue"
             fill
+            sizes="(min-width: 1280px) 60vw, (min-width: 1024px) 50vw, 100vw"
             priority
             className="object-cover"
           />

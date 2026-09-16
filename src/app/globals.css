@@ -6,6 +6,7 @@
   --primary: #007aff;
   --primary-soft: #bddaff;
   --muted: #64748b;
+  --danger: #dc2626;
   --section-background: #f8fafc;
 }
 
@@ -15,528 +16,227 @@
   --color-primary: var(--primary);
   --color-primary-soft: var(--primary-soft);
   --color-muted: var(--muted);
+  --color-danger: var(--danger);
   --color-section: var(--section-background);
-
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-
-/* =========================
-   BODY
-   ========================= */
-
-/* Main website background, text color, and font */
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  }
 }
 
-
-/* =========================
-   TEXTS - MOBILE DEFAULT
-   ========================= */
-
-/* Use for the Serv logo/brand name */
-.text-logo {
-  @apply
-  text-primary
-  font-extrabold
-  tracking-tight;
-}
-
-/* Use for main page or major section headings */
-.text-heading {
-  @apply
-  font-extrabold
-  text-[2.25rem]
-  leading-[1.05]
-  tracking-tight;
-}
-
-/* Use for smaller headings, card titles, or section subtitles */
-.text-subtitle {
-  @apply
-  font-bold
-  text-[1.25rem]
-  leading-tight;
-}
-
-/* Use for regular paragraphs and descriptions */
-.text-body {
-  @apply
-  font-[550]
-  text-[0.95rem]
-  leading-relaxed;
-}
-
-/* Use for form labels or small important text */
-.text-label {
-  @apply
-  font-semibold
-  text-[0.85rem];
-}
-
-/* Use for small uppercase helper text */
-.text-eyebrow {
-  @apply
-  text-[0.65rem]
-  font-bold
-  uppercase
-  tracking-[0.08em]
-  text-slate-500;
-}
-
-/* Blue version of eyebrow text */
-.text-eyebrow-blue {
-  @apply
-  text-[0.65rem]
-  font-bold
-  uppercase
-  tracking-[0.08em]
-  text-primary;
-}
-
-/* Use for navigation links */
-.text-nav {
-  @apply
-  text-[clamp(0.75rem,0.75vw,0.9rem)]
-  font-bold
-  uppercase
-  tracking-[0.2em]
-  text-slate-500
-  hover:text-primary;
-}
-
-/* Use with body text when you want it less visually prominent */
-.text-muted {
-  @apply
-  text-slate-600;
-}
-
-/* Use for large numbers or statistics */
-.text-stat {
-  @apply
-  font-extrabold
-  text-[1.4rem]
-  leading-none;
-}
-
-/* Use below a statistic to describe what the number represents */
-.text-stat-label {
-  @apply
-  text-[0.75rem]
-  text-slate-500
-  leading-snug;
-}
-
-
-/* =========================
-   TABLET / DESKTOP TEXTS
-   ========================= */
-
-@media (min-width: 768px) {
+@layer components {
+  /* Typography */
+  .text-logo {
+    @apply font-extrabold tracking-tight text-primary;
+  }
 
   .text-heading {
-    @apply
-    text-[clamp(2.75rem,4vw,4rem)]
-    leading-[1.02];
+    @apply text-[2.25rem] font-extrabold leading-[1.05] tracking-tight;
   }
 
   .text-subtitle {
-    @apply
-    text-[clamp(1.25rem,1.6vw,1.6rem)];
+    @apply text-[1.25rem] font-bold leading-tight;
   }
 
   .text-body {
-    @apply
-    font-[550]
-    text-[clamp(0.95rem,1.05vw,1.1rem)];
+    @apply text-[0.95rem] font-[550] leading-relaxed;
   }
 
   .text-label {
-    @apply
-    text-[clamp(0.85rem,0.9vw,1rem)];
+    @apply text-[0.85rem] font-semibold;
   }
 
   .text-eyebrow,
   .text-eyebrow-blue {
-    @apply
-    text-[0.75rem]
-    tracking-[0.14em];
+    @apply text-[0.65rem] font-bold uppercase tracking-[0.08em];
   }
 
+  .text-eyebrow {
+    @apply text-slate-500;
+  }
+
+  .text-eyebrow-blue {
+    @apply text-primary;
+  }
+
+  .text-nav {
+    @apply text-[clamp(0.75rem,0.75vw,0.9rem)] font-bold uppercase tracking-[0.2em] text-slate-500 hover:text-primary;
+  }
+
+  .text-muted {
+    @apply text-slate-600;
+  }
 
   .text-stat {
-    @apply
-    text-[clamp(1.4rem,1.8vw,1.8rem)];
+    @apply text-[1.4rem] font-extrabold leading-none;
   }
 
   .text-stat-label {
-    @apply
-    text-[clamp(0.75rem,0.8vw,0.9rem)];
+    @apply text-[0.75rem] leading-snug text-slate-500;
   }
-}
 
-
-/* =========================
-   BUTTONS
-   ========================= */
-
-/* Use for the main action on a page or section */
-.btn-primary {
-  @apply
-  bg-primary
-  text-white
-  font-semibold
-  px-8
-  py-3
-  rounded-md
-  text-[0.9rem]
-  flex
-  items-center
-  justify-center
-  transition-all
-  duration-200
-  hover:scale-101;
-}
-
-/* Use for primary button inside navbar */
-.btn-nav-primary {
-  @apply
-  bg-primary
-  text-white
-  flex
-  justify-center
-  items-center
-  font-bold
-  uppercase
-  tracking-[0.2em]
-  px-5
-  py-2.5
-  rounded-md
-  text-[clamp(0.75rem,0.75vw,0.9rem)]
-  transition-all
-  duration-200
-  hover:scale-101;
-}
-
-/* Use for secondary button inside navbar */
-.btn-nav-secondary {
-  @apply
-  bg-white
-  text-slate-500
-  border
-  border-slate-300
-  font-bold
-  uppercase
-  tracking-[0.2em]
-  px-5
-  py-2.5
-  rounded-md
-  text-[clamp(0.75rem,0.75vw,0.9rem)]
-  flex
-  items-center
-  justify-center
-  transition-all
-  duration-200
-  hover:text-primary
-  hover:border-primary;
-}
-
-/* Use for a secondary action beside the primary button */
-.btn-secondary {
-  @apply
-  bg-white
-  border
-  border-primary
-  font-semibold
-  px-6
-  py-3
-  rounded-md
-  text-[0.9rem]
-  flex
-  items-center
-  justify-center
-  transition-all
-  duration-200
-  hover:bg-blue-50
-  hover:scale-101;
-}
-
-/* Use for Google, Facebook, and other social login buttons */
-.btn-social {
-  @apply
-  w-full
-  flex
-  items-center
-  justify-center
-  gap-3
-  border
-  border-gray-200
-  bg-white
-  px-5
-  py-3
-  rounded-lg
-  text-slate-700
-  font-medium
-  shadow-sm
-  transition-all
-  duration-200
-  hover:bg-gray-50
-  hover:shadow-md;
-}
-
-/* Makes button text responsive on tablet and desktop */
-@media (min-width: 768px) {
+  /* Buttons */
   .btn-primary,
+  .btn-nav-primary,
+  .btn-nav-secondary,
   .btn-secondary,
   .btn-social {
-    @apply
-    text-[clamp(0.9rem,1vw,1rem)];
+    @apply cursor-pointer transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-60;
   }
-}
 
+  .btn-primary {
+    @apply flex items-center justify-center rounded-md bg-primary px-8 py-3 text-[0.9rem] font-semibold text-white hover:scale-[1.01];
+  }
 
-/* =========================
-   LINKS
-   ========================= */
+  .btn-nav-primary {
+    @apply flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-[clamp(0.75rem,0.75vw,0.9rem)] font-bold uppercase tracking-[0.2em] text-white hover:scale-[1.01];
+  }
 
-/* Use for links inside the footer */
-.footer-link {
-  @apply
-  text-slate-600
-  transition-colors
-  duration-200
-  hover:text-primary;
-}
+  .btn-nav-secondary {
+    @apply flex items-center justify-center rounded-md border border-slate-300 bg-white px-5 py-2.5 text-[clamp(0.75rem,0.75vw,0.9rem)] font-bold uppercase tracking-[0.2em] text-slate-500 hover:border-primary hover:text-primary;
+  }
 
-.back-link {
-  @apply
-  text-primary
-  font-medium
-  flex 
-  items-center 
-  justify-center
-  gap-2
-  transition-transform
-  hover:scale-101;
-}
+  .btn-secondary {
+    @apply flex items-center justify-center rounded-md border border-primary bg-white px-6 py-3 text-[0.9rem] font-semibold hover:scale-[1.01] hover:bg-primary-soft/30;
+  }
 
+  .btn-social {
+    @apply flex w-full items-center justify-center gap-3 rounded-lg border border-gray-200 bg-white px-5 py-3 font-medium text-slate-700 shadow-sm hover:bg-gray-50 hover:shadow-md;
+  }
 
-/* =========================
-   FORM ELEMENTS
-   ========================= */
+  /* Links */
+  .footer-link,
+  .back-link {
+    @apply rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+  }
 
-/* Use for inputs, textareas, and similar form fields */
-.form-input {
-  @apply
-  w-full
-  border
-  border-gray-300
-  rounded-md
-  py-3
-  outline-none
-  transition-colors
-  focus:border-primary;
-}
+  .footer-link {
+    @apply text-slate-600 transition-colors hover:text-primary;
+  }
 
+  .back-link {
+    @apply flex items-center justify-center gap-2 font-medium text-primary transition-transform hover:scale-[1.01];
+  }
 
-/* =========================
-   AUTHENTICATION
-   ========================= */
+  /* Forms */
+  .form-input {
+    @apply w-full rounded-md border border-gray-300 px-3 py-3 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20;
+  }
 
-/* Full-page shell shared by login, registration, and password recovery pages */
-.auth-page {
-  @apply
-  min-h-screen
-  flex
-  flex-col
-  px-6
-  py-6
-  md:px-10
-  lg:px-16;
-}
+  .form-input-icon {
+    @apply pl-10;
+  }
 
-/* Small login or sign-up prompt shown at the top of an authentication page */
-.auth-prompt {
-  @apply
-  pt-4
-  flex
-  justify-end
-  gap-1;
-}
+  .form-input-actions {
+    @apply pl-10 pr-10;
+  }
 
-/* Centers the main authentication content */
-.auth-main {
-  @apply
-  flex-1
-  flex
-  items-center
-  justify-center;
-}
+  .form-field {
+    @apply flex flex-col gap-2;
+  }
 
-/* Sets a consistent width and spacing for authentication forms */
-.auth-card {
-  @apply
-  w-full
-  max-w-xl
-  flex
-  flex-col
-  gap-4;
-}
+  .form-icon {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 text-slate-400;
+  }
 
-/* Centers the image, title, and description above a form */
-.auth-header {
-  @apply
-  mb-8
-  flex
-  flex-col
-  items-center
-  text-center;
-}
+  .form-action {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer rounded-sm transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+  }
 
-.auth-heading {
-  @apply
-  text-3xl
-  font-extrabold
-  tracking-tight
-  lg:text-4xl;
-}
+  .form-error {
+    @apply text-sm text-danger;
+  }
 
-.form-field {
-  @apply
-  flex
-  flex-col
-  gap-2;
-}
+  /* Authentication layouts */
+  .auth-page {
+    @apply flex min-h-screen flex-col px-6 py-6 md:px-10 lg:px-16;
+  }
 
-.form-icon {
-  @apply
-  absolute
-  left-3
-  top-1/2
-  -translate-y-1/2
-  text-slate-400;
-}
+  .auth-prompt {
+    @apply flex justify-end gap-1 pt-4;
+  }
 
-.form-error {
-  @apply
-  text-sm
-  text-red-500;
-}
+  .auth-main {
+    @apply flex flex-1 items-center justify-center;
+  }
 
-/* Reusable modal background and centered panel */
-.modal-backdrop {
-  @apply
-  fixed
-  inset-0
-  z-50
-  flex
-  items-center
-  justify-center
-  bg-black/50
-  p-4;
-}
+  .auth-card {
+    @apply flex w-full max-w-xl flex-col;
+  }
 
-.modal-card {
-  @apply
-  relative
-  w-full
-  max-w-lg
-  max-h-[90vh]
-  rounded-xl
-  bg-white
-  p-6
-  text-black
-  flex
-  flex-col
-  items-center
-  justify-center;
-}
+  .auth-header {
+    @apply mb-8 flex flex-col items-center text-center;
+  }
 
-.modal-close {
-  @apply
-  absolute
-  right-4
-  top-4
-  text-2xl
-  leading-none
-  text-slate-500
-  transition-colors
-  hover:text-slate-900;
-}
+  .auth-heading {
+    @apply text-3xl font-extrabold tracking-tight lg:text-4xl;
+  }
 
-.verification-form {
-  @apply
-  mt-6
-  w-full
-  flex
-  flex-col
-  gap-6;
-}
+  .auth-social {
+    @apply flex w-full flex-col gap-3;
+  }
 
-.verification-inputs {
-  @apply
-  flex
-  justify-center
-  gap-2;
-}
+  .auth-divider {
+    @apply my-6 flex w-full items-center gap-5;
+  }
 
-.verification-code-input {
-  @apply
-  h-12
-  w-12
-  rounded-md
-  border
-  border-gray-300
-  text-center
-  text-xl
-  outline-none
-  transition-colors
-  focus:border-primary;
-}
+  .auth-divider-line {
+    @apply h-px flex-1 bg-slate-300;
+  }
 
+  .auth-form {
+    @apply flex w-full flex-col gap-5;
+  }
 
-/* =========================
-   BADGES
-   ========================= */
+  /* Shared content helpers */
+  .badge-primary {
+    @apply inline-flex self-start rounded-full bg-primary-soft px-4 py-1.5 text-[0.7rem] font-bold uppercase tracking-wide text-primary;
+  }
 
-/* Use for soft primary-colored pill badges */
-.badge-primary {
-  @apply
-  inline-flex
-  self-start
-  items-center
-  rounded-full
-  bg-primary-soft
-  text-primary
-  px-4
-  py-1.5
-  text-[0.7rem]
-  font-bold
-  uppercase
-  tracking-wide;
-}
-
-
-/* =========================
-   SECTION HELPERS
-   ========================= */
-
-/* Use on major page sections for consistent spacing */
-.section-padding {
-  @apply
-  px-6
-  py-12;
-}
-
-/* Adds more section spacing on tablet and desktop */
-@media (min-width: 768px) {
   .section-padding {
-    @apply
-    px-10
-    py-16;
+    @apply px-6 py-12 md:px-10 md:py-16;
+  }
+
+  @media (min-width: 768px) {
+    .text-heading {
+      @apply text-[clamp(2.75rem,4vw,4rem)] leading-[1.02];
+    }
+
+    .text-subtitle {
+      @apply text-[clamp(1.25rem,1.6vw,1.6rem)];
+    }
+
+    .text-body {
+      @apply text-[clamp(0.95rem,1.05vw,1.1rem)];
+    }
+
+    .text-label {
+      @apply text-[clamp(0.85rem,0.9vw,1rem)];
+    }
+
+    .text-eyebrow,
+    .text-eyebrow-blue {
+      @apply text-[0.75rem] tracking-[0.14em];
+    }
+
+    .text-stat {
+      @apply text-[clamp(1.4rem,1.8vw,1.8rem)];
+    }
+
+    .text-stat-label {
+      @apply text-[clamp(0.75rem,0.8vw,0.9rem)];
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-social {
+      @apply text-[clamp(0.9rem,1vw,1rem)];
+    }
   }
 }
