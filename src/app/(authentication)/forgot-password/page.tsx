@@ -22,9 +22,7 @@ interface CodeFormData {
 const ForgotPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState("");
-
-  const [timer, setTimer] = useState(60);
-  const [isActive, setIsActive] = useState(false);
+  const [timer, setTimer] = useState(0);
 
   const codeInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -39,7 +37,7 @@ const ForgotPage = () => {
     },
   });
 
-  // Authentication Code Form
+  // Verification Code Form
   const {
     register: registerCode,
     handleSubmit: handleCodeSubmit,
@@ -53,21 +51,14 @@ const ForgotPage = () => {
 
   // Countdown Timer
   useEffect(() => {
-    if (!isActive) {
-      return;
-    }
-
-    if (timer <= 0) {
-      setIsActive(false);
-      return;
-    }
+    if (timer <= 0) return;
 
     const timeoutId = setTimeout(() => {
       setTimer((prev) => prev - 1);
     }, 1000);
 
     return () => clearTimeout(timeoutId);
-  }, [isActive, timer]);
+  }, [timer]);
 
   // Format Timer
   function formatTime(timeInSeconds: number): string {
@@ -80,60 +71,52 @@ const ForgotPage = () => {
   // Submit Email
   function submitEmail(data: ForgotPasswordFormData): void {
     // TODO: Send password reset code through authentication API.
-    // TODO: Check whether the email exists.
+    // TODO: Check if the email exists.
     // TODO: Handle server/network errors.
-    // TODO: Only open modal after code is successfully sent.
+    // TODO: Only open modal after the code is successfully sent.
 
-    console.log(data);
+    console.log("Send code to:", data.email);
 
     setSubmittedEmail(data.email);
-
-    resetCode();
-
     setTimer(60);
-    setIsActive(true);
+    resetCode();
     setIsModalOpen(true);
   }
 
-  // Submit Authentication Code
+  // Submit Verification Code
   function submitCode(data: CodeFormData): void {
     const authenticationCode = data.code.join("");
 
     // TODO: Verify authentication code through authentication API.
-    // TODO: Handle incorrect authentication code.
-    // TODO: Handle expired authentication code.
+    // TODO: Handle incorrect verification code.
+    // TODO: Handle expired verification code.
     // TODO: Redirect to /reset-password after successful verification.
 
     console.log("Authentication Code:", authenticationCode);
   }
 
-  // Resend Authentication Code
+  // Resend Verification Code
   function resendCode(): void {
-    // TODO: Request another authentication code from the API.
-    // TODO: Use submittedEmail when requesting another code.
+    // TODO: Send another verification code through authentication API.
     // TODO: Handle resend failure.
 
     console.log("Resend code to:", submittedEmail);
 
     resetCode();
-
     setTimer(60);
-    setIsActive(true);
 
     codeInputRefs.current[0]?.focus();
   }
 
-  // Close Modal
+  // Close Verification Modal
   function closeModal(): void {
     setIsModalOpen(false);
-    setIsActive(false);
-
+    setTimer(0);
     resetCode();
   }
 
   return (
     <div className="auth-page">
-
       {/* Auth Prompt */}
       <div className="auth-prompt">
         <span className="text-eyebrow">
@@ -177,7 +160,6 @@ const ForgotPage = () => {
             className="flex w-full flex-col gap-4"
             onSubmit={handleSubmit(submitEmail)}
           >
-
             {/* Email Field */}
             <div className="form-field">
               <label
@@ -232,13 +214,12 @@ const ForgotPage = () => {
             className="back-link"
           >
             <BiArrowBack aria-hidden="true" />
-
             Back to Login
           </Link>
         </div>
       </main>
 
-      {/* Authentication Code Modal */}
+      {/* Verification Modal */}
       <Modal
         isOpen={isModalOpen}
         className="modal-backdrop"
@@ -289,17 +270,17 @@ const ForgotPage = () => {
             onSubmit={handleCodeSubmit(submitCode)}
             className="verification-form"
           >
-
             {/* Verification Inputs */}
             <div className="verification-inputs">
               {Array.from({ length: 6 }, (_, index) => {
-                const codeField = registerCode(
-                  `code.${index}`,
-                  {
-                    required: true,
-                    pattern: /^\d$/,
-                  }
-                );
+                const {
+                  ref,
+                  onChange,
+                  ...codeField
+                } = registerCode(`code.${index}`, {
+                  required: true,
+                  pattern: /^\d$/,
+                });
 
                 return (
                   <input
@@ -307,10 +288,11 @@ const ForgotPage = () => {
                     {...codeField}
 
                     ref={(element) => {
-                      codeField.ref(element);
+                      // Give the input to React Hook Form
+                      ref(element);
 
-                      codeInputRefs.current[index] =
-                        element;
+                      // Save the input so we can focus next/previous boxes
+                      codeInputRefs.current[index] = element;
                     }}
 
                     type="text"
@@ -328,16 +310,17 @@ const ForgotPage = () => {
                         : "false"
                     }
 
-                    onInput={(event) => {
-                      const input =
-                        event.currentTarget;
+                    onChange={(event) => {
+                      const input = event.currentTarget;
 
-                      // Only allow numbers
-                      input.value =
-                        input.value.replace(
-                          /\D/g,
-                          ""
-                        );
+                      // Remove anything that is not a number
+                      input.value = input.value.replace(
+                        /\D/g,
+                        ""
+                      );
+
+                      // Update React Hook Form
+                      onChange(event);
 
                       // Move to next input
                       if (
@@ -351,7 +334,7 @@ const ForgotPage = () => {
                     }}
 
                     onKeyDown={(event) => {
-                      // Move back when Backspace is pressed
+                      // Move to previous input if current box is empty
                       if (
                         event.key === "Backspace" &&
                         !event.currentTarget.value &&
@@ -367,7 +350,7 @@ const ForgotPage = () => {
               })}
             </div>
 
-            {/* Code Error */}
+            {/* Verification Error */}
             {codeErrors.code && (
               <span
                 className="form-error text-center"
@@ -382,14 +365,14 @@ const ForgotPage = () => {
               type="submit"
               className="btn-primary w-full"
             >
-              Verify Code
+              Verify
             </Button>
 
             {/* Resend Code */}
             <p className="text-muted text-center">
               Didn&apos;t receive the code?{" "}
 
-              {isActive ? (
+              {timer > 0 ? (
                 <span className="text-muted">
                   Resend available in{" "}
                   {formatTime(timer)}
