@@ -16,6 +16,7 @@ import {
 } from "react-icons/ai";
 
 import Button from "@/components/ui/Button";
+import authStyles from "../authentication.module.css";
 
 interface RegisterFormData {
   firstName: string;
@@ -64,10 +65,10 @@ const RegisterPage = () => {
   }
 
   return (
-    <div className="auth-page">
+    <div className={authStyles.page}>
 
       {/* Auth Prompt */}
-      <div className="auth-prompt">
+      <div className={authStyles.prompt}>
         <span className="text-eyebrow">
           Already have an account?
         </span>
@@ -81,12 +82,12 @@ const RegisterPage = () => {
       </div>
 
       {/* Register Container */}
-      <main className="auth-main py-10">
-        <div className="auth-card">
+      <main className={`${authStyles.main} py-10`}>
+        <div className={authStyles.card}>
 
           {/* Header Container */}
-          <div className="auth-header">
-            <h1 className="auth-heading">
+          <div className={authStyles.header}>
+            <h1 className={authStyles.heading}>
               Join Serv today
             </h1>
 
@@ -96,12 +97,12 @@ const RegisterPage = () => {
           </div>
 
           {/* Social Login Container */}
-          <div className="auth-social">
+          <div className={authStyles.social}>
 
             {/* TODO: Connect Google authentication */}
             <Button
               type="button"
-              className="btn-social"
+              className={authStyles.socialButton}
             >
               <FcGoogle size={20} />
               Continue with Google
@@ -110,7 +111,7 @@ const RegisterPage = () => {
             {/* TODO: Connect Facebook authentication */}
             <Button
               type="button"
-              className="btn-social"
+              className={authStyles.socialButton}
             >
               <BsFacebook
                 size={20}
@@ -122,19 +123,19 @@ const RegisterPage = () => {
           </div>
 
           {/* Divider */}
-          <div className="auth-divider">
-            <div className="auth-divider-line" />
+          <div className={authStyles.divider}>
+            <div className={authStyles.dividerLine} />
 
             <span className="text-sm text-muted">
               OR
             </span>
 
-            <div className="auth-divider-line" />
+            <div className={authStyles.dividerLine} />
           </div>
 
           {/* Register Form */}
           <form
-            className="auth-form"
+            className={authStyles.form}
             onSubmit={handleSubmit(submitForm)}
           >
 
@@ -142,7 +143,7 @@ const RegisterPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
               {/* First Name Field */}
-              <div className="form-field">
+              <div className={authStyles.field}>
                 <label
                   htmlFor="firstName"
                   className="text-label"
@@ -152,7 +153,7 @@ const RegisterPage = () => {
 
                 <div className="relative">
                   <AiOutlineUser
-                    className="form-icon"
+                    className={authStyles.fieldIcon}
                   />
 
                   <input
@@ -162,19 +163,19 @@ const RegisterPage = () => {
                     id="firstName"
                     type="text"
                     placeholder="Enter your first name"
-                    className="form-input form-input-icon"
+                    className={`${authStyles.input} ${authStyles.inputWithIcon}`}
                   />
                 </div>
 
                 {errors.firstName && (
-                  <span className="form-error">
+                  <span className={authStyles.error}>
                     {errors.firstName.message}
                   </span>
                 )}
               </div>
 
               {/* Last Name Field */}
-              <div className="form-field">
+              <div className={authStyles.field}>
                 <label
                   htmlFor="lastName"
                   className="text-label"
@@ -184,7 +185,7 @@ const RegisterPage = () => {
 
                 <div className="relative">
                   <AiOutlineUser
-                    className="form-icon"
+                    className={authStyles.fieldIcon}
                   />
 
                   <input
@@ -194,12 +195,12 @@ const RegisterPage = () => {
                     id="lastName"
                     type="text"
                     placeholder="Enter your last name"
-                    className="form-input form-input-icon"
+                    className={`${authStyles.input} ${authStyles.inputWithIcon}`}
                   />
                 </div>
 
                 {errors.lastName && (
-                  <span className="form-error">
+                  <span className={authStyles.error}>
                     {errors.lastName.message}
                   </span>
                 )}
@@ -207,7 +208,7 @@ const RegisterPage = () => {
             </div>
 
             {/* Email Field */}
-            <div className="form-field">
+            <div className={authStyles.field}>
               <label
                 htmlFor="email"
                 className="text-label"
@@ -217,7 +218,7 @@ const RegisterPage = () => {
 
               <div className="relative">
                 <AiOutlineMail
-                  className="form-icon"
+                  className={authStyles.fieldIcon}
                 />
 
                 <input
@@ -227,19 +228,19 @@ const RegisterPage = () => {
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="form-input form-input-icon"
+                  className={`${authStyles.input} ${authStyles.inputWithIcon}`}
                 />
               </div>
 
               {errors.email && (
-                <span className="form-error">
+                <span className={authStyles.error}>
                   {errors.email.message}
                 </span>
               )}
             </div>
 
             {/* Password Field */}
-            <div className="form-field">
+            <div className={authStyles.field}>
               <label
                 htmlFor="password"
                 className="text-label"
@@ -249,7 +250,7 @@ const RegisterPage = () => {
 
               <div className="relative">
                 <AiOutlineLock
-                  className="form-icon"
+                  className={authStyles.fieldIcon}
                 />
 
                 <input
@@ -264,7 +265,7 @@ const RegisterPage = () => {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  className="form-input form-input-actions"
+                  className={`${authStyles.input} ${authStyles.inputWithActions}`}
                 />
 
                 <Button
@@ -272,7 +273,7 @@ const RegisterPage = () => {
                   onClick={() =>
                     setShowPassword((prev) => !prev)
                   }
-                  className="form-action"
+                  className={authStyles.fieldAction}
                   aria-label={
                     showPassword
                       ? "Hide password"
@@ -288,14 +289,14 @@ const RegisterPage = () => {
               </div>
 
               {errors.password && (
-                <span className="form-error">
+                <span className={authStyles.error}>
                   {errors.password.message}
                 </span>
               )}
             </div>
 
             {/* Confirm Password Field */}
-            <div className="form-field">
+            <div className={authStyles.field}>
               <label
                 htmlFor="confirmPassword"
                 className="text-label"
@@ -305,7 +306,7 @@ const RegisterPage = () => {
 
               <div className="relative">
                 <AiOutlineLock
-                  className="form-icon"
+                  className={authStyles.fieldIcon}
                 />
 
                 <input
@@ -323,7 +324,7 @@ const RegisterPage = () => {
                       : "password"
                   }
                   placeholder="Confirm your password"
-                  className="form-input form-input-actions"
+                  className={`${authStyles.input} ${authStyles.inputWithActions}`}
                 />
 
                 <Button
@@ -333,7 +334,7 @@ const RegisterPage = () => {
                       (prev) => !prev
                     )
                   }
-                  className="form-action"
+                  className={authStyles.fieldAction}
                   aria-label={
                     showConfirmPassword
                       ? "Hide confirm password"
@@ -349,7 +350,7 @@ const RegisterPage = () => {
               </div>
 
               {errors.confirmPassword && (
-                <span className="form-error">
+                <span className={authStyles.error}>
                   {errors.confirmPassword.message}
                 </span>
               )}
@@ -394,7 +395,7 @@ const RegisterPage = () => {
               </div>
 
               {errors.agreeToTerms && (
-                <span className="form-error">
+                <span className={authStyles.error}>
                   {errors.agreeToTerms.message}
                 </span>
               )}

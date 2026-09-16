@@ -11,7 +11,7 @@ import { BiArrowBack } from "react-icons/bi";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 
-import styles from "./forgot-password.module.css";
+import authStyles from "../authentication.module.css";
 
 interface ForgotPasswordFormData {
   email: string;
@@ -118,9 +118,9 @@ const ForgotPage = () => {
   }
 
   return (
-    <div className="auth-page">
+    <div className={authStyles.page}>
       {/* Auth Prompt */}
-      <div className="auth-prompt">
+      <div className={authStyles.prompt}>
         <span className="text-eyebrow">
           Remember your password?
         </span>
@@ -134,11 +134,11 @@ const ForgotPage = () => {
       </div>
 
       {/* Forgot Password Container */}
-      <main className="auth-main">
-        <div className="auth-card gap-4">
+      <main className={authStyles.main}>
+        <div className={`${authStyles.card} gap-4`}>
 
           {/* Header Container */}
-          <div className="auth-header">
+          <div className={authStyles.header}>
             <Image
               src="/authentication/lock.png"
               alt=""
@@ -147,7 +147,7 @@ const ForgotPage = () => {
               priority
             />
 
-            <h1 className="auth-heading">
+            <h1 className={authStyles.heading}>
               Forgot Password?
             </h1>
 
@@ -159,11 +159,11 @@ const ForgotPage = () => {
 
           {/* Email Form */}
           <form
-            className="auth-form gap-4"
+            className={`${authStyles.form} gap-4`}
             onSubmit={handleSubmit(submitEmail)}
           >
             {/* Email Field */}
-            <div className="form-field">
+            <div className={authStyles.field}>
               <label
                 htmlFor="email"
                 className="text-label"
@@ -173,7 +173,7 @@ const ForgotPage = () => {
 
               <div className="relative">
                 <AiOutlineMail
-                  className="form-icon"
+                  className={authStyles.fieldIcon}
                   aria-hidden="true"
                 />
 
@@ -184,7 +184,7 @@ const ForgotPage = () => {
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="form-input form-input-icon"
+                  className={`${authStyles.input} ${authStyles.inputWithIcon}`}
                   aria-invalid={
                     errors.email ? "true" : "false"
                   }
@@ -193,7 +193,7 @@ const ForgotPage = () => {
 
               {errors.email && (
                 <span
-                  className="form-error"
+                  className={authStyles.error}
                   role="alert"
                 >
                   {errors.email.message}
@@ -213,7 +213,7 @@ const ForgotPage = () => {
           {/* Back to Login */}
           <Link
             href="/login"
-            className="back-link"
+            className={authStyles.backLink}
           >
             <BiArrowBack aria-hidden="true" />
             Back to Login
@@ -224,17 +224,17 @@ const ForgotPage = () => {
       {/* Verification Modal */}
       <Modal
         isOpen={isModalOpen}
-        className={styles.backdrop}
+        className={authStyles.backdrop}
         role="dialog"
         aria-modal="true"
         aria-labelledby="verification-title"
       >
-        <div className={styles.dialog}>
+        <div className={authStyles.dialog}>
 
           {/* Close Button */}
           <Button
             type="button"
-            className={styles.closeButton}
+            className={authStyles.closeButton}
             onClick={closeModal}
             aria-label="Close verification dialog"
           >
@@ -253,7 +253,7 @@ const ForgotPage = () => {
           <div className="flex flex-col items-center text-center">
             <h2
               id="verification-title"
-              className="auth-heading"
+              className={authStyles.heading}
             >
               Enter authentication code
             </h2>
@@ -270,10 +270,10 @@ const ForgotPage = () => {
           {/* Verification Form */}
           <form
             onSubmit={handleCodeSubmit(submitCode)}
-            className={styles.verificationForm}
+            className={authStyles.verificationForm}
           >
             {/* Verification Inputs */}
-            <div className={styles.codeInputs}>
+            <div className={authStyles.codeInputs}>
               {Array.from({ length: 6 }, (_, index) => {
                 const {
                   ref,
@@ -302,7 +302,7 @@ const ForgotPage = () => {
                     maxLength={1}
                     autoComplete="one-time-code"
 
-                    className={styles.codeInput}
+                    className={authStyles.codeInput}
 
                     aria-label={`Code digit ${index + 1}`}
 
@@ -355,7 +355,7 @@ const ForgotPage = () => {
             {/* Verification Error */}
             {codeErrors.code && (
               <span
-                className="form-error text-center"
+                className={`${authStyles.error} text-center`}
                 role="alert"
               >
                 Enter all six digits.

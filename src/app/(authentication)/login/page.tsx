@@ -15,6 +15,7 @@ import {
 } from "react-icons/ai";
 
 import Button from "@/components/ui/Button";
+import authStyles from "../authentication.module.css";
 
 interface LoginFormData {
   email: string;
@@ -45,10 +46,10 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="auth-page">
+    <div className={authStyles.page}>
 
       {/* Auth Prompt */}
-      <div className="auth-prompt">
+      <div className={authStyles.prompt}>
         <span className="text-eyebrow">
           Don&apos;t have an account?
         </span>
@@ -62,13 +63,13 @@ const LoginPage = () => {
       </div>
 
       {/* Login Container */}
-      <main className="auth-main">
+      <main className={authStyles.main}>
 
-        <div className="auth-card">
+        <div className={authStyles.card}>
 
           {/* Header Container */}
-          <div className="auth-header">
-           <h1 className="auth-heading">
+          <div className={authStyles.header}>
+           <h1 className={authStyles.heading}>
               Welcome back
             </h1>
 
@@ -78,12 +79,12 @@ const LoginPage = () => {
           </div>
 
           {/* Social Login Container */}
-          <div className="auth-social">
+          <div className={authStyles.social}>
 
             {/* TODO: Connect Google authentication */}
             <Button
               type="button"
-              className="btn-social"
+              className={authStyles.socialButton}
             >
               <FcGoogle size={20} />
               Continue with Google
@@ -92,7 +93,7 @@ const LoginPage = () => {
             {/* TODO: Connect Facebook authentication */}
             <Button
               type="button"
-              className="btn-social"
+              className={authStyles.socialButton}
             >
               <BsFacebook
                 size={20}
@@ -104,24 +105,24 @@ const LoginPage = () => {
           </div>
 
           {/* Divider */}
-          <div className="auth-divider">
-            <div className="auth-divider-line" />
+          <div className={authStyles.divider}>
+            <div className={authStyles.dividerLine} />
 
             <span className="text-sm text-muted">
               OR
             </span>
 
-            <div className="auth-divider-line" />
+            <div className={authStyles.dividerLine} />
           </div>
 
           {/* Login Form */}
           <form
-            className="auth-form"
+            className={authStyles.form}
             onSubmit={handleSubmit(submitForm)}
           >
 
             {/* Email Field */}
-            <div className="form-field">
+            <div className={authStyles.field}>
               <label
                 htmlFor="email"
                 className="text-label"
@@ -131,7 +132,7 @@ const LoginPage = () => {
 
               <div className="relative">
                 <AiOutlineMail
-                  className="form-icon"
+                  className={authStyles.fieldIcon}
                 />
 
                 <input
@@ -141,19 +142,19 @@ const LoginPage = () => {
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="form-input form-input-icon"
+                  className={`${authStyles.input} ${authStyles.inputWithIcon}`}
                 />
               </div>
 
               {errors.email && (
-                <span className="form-error">
+                <span className={authStyles.error}>
                   {errors.email.message}
                 </span>
               )}
             </div>
 
             {/* Password Field */}
-            <div className="form-field">
+            <div className={authStyles.field}>
               <label
                 htmlFor="password"
                 className="text-label"
@@ -163,7 +164,7 @@ const LoginPage = () => {
 
               <div className="relative">
                 <AiOutlineLock
-                  className="form-icon"
+                  className={authStyles.fieldIcon}
                 />
 
                 <input
@@ -178,7 +179,7 @@ const LoginPage = () => {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  className="form-input form-input-actions"
+                  className={`${authStyles.input} ${authStyles.inputWithActions}`}
                 />
 
                 <Button
@@ -186,7 +187,7 @@ const LoginPage = () => {
                   onClick={() =>
                     setShowPassword((prev) => !prev)
                   }
-                  className="form-action"
+                  className={authStyles.fieldAction}
                   aria-label={
                     showPassword
                       ? "Hide password"
@@ -202,7 +203,7 @@ const LoginPage = () => {
               </div>
 
               {errors.password && (
-                <span className="form-error">
+                <span className={authStyles.error}>
                   {errors.password.message}
                 </span>
               )}
