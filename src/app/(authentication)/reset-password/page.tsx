@@ -10,6 +10,8 @@ import { FiCheckCircle } from "react-icons/fi";
 import Button from "@/components/ui/Button";
 
 import authStyles from "../authentication.module.css";
+import Modal from "@/components/ui/Modal";
+import Link from "next/link";
 
 interface NewPasswordData {
   newPassword: string;
@@ -19,7 +21,7 @@ interface NewPasswordData {
 const ResetPasswordPage = () => {
   const [isShowNewPassword, setIsShowNewPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -41,7 +43,11 @@ const ResetPasswordPage = () => {
   function submitNewPassword(): void {
     // TODO: Verify the password-reset token on the server.
     // TODO: Send the new password to the authentication API.
-    // TODO: Show server errors and redirect after a successful reset.
+    // TODO: Show an error if the server rejects the password update.
+    // TODO: After adding the backend, only open this modal when the API succeeds.
+
+    // Temporary frontend behavior: this runs only after form validation passes.
+    setIsModalOpen(true);
   }
 
   return (
@@ -271,6 +277,26 @@ const ResetPasswordPage = () => {
           </form>
         </div>
       </main>
+             
+        <Modal
+        isOpen={isModalOpen}
+        className={authStyles.backdrop}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="password-updated-title"
+      >
+       <div className={authStyles.dialog}>
+            <Image 
+            src="/authentication/check.png"
+            alt="check-image"
+            width={250} 
+            height={250}/>
+
+            <h1 className={authStyles.heading}>Password Updated!</h1>
+            <p className="text-muted text-center my-4">Your password has been successfully changed. You can now log in with your new password</p>
+            <Link href="/login" className="btn-primary w-full mb-4">Go to Login</Link>
+        </div>
+      </Modal>
     </div>
   );
 };
