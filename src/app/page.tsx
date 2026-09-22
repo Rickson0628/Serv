@@ -1,4 +1,4 @@
-import Navbar from "@/components/layout/Navbar";
+import Navbar from "@/components/layout/marketing/Navbar";
 import ServiceCategories from "@/components/home/ServiceCategories";
 import ServiceSection from "@/components/home/ServiceSection";
 import Offer from "@/components/home/Offer";
