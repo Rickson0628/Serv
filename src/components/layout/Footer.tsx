@@ -90,7 +90,7 @@ const Footer = () => {
 
         {/* Brand Container */}
         <div className="flex flex-[2] flex-col gap-3">
-          <h2 className="text-logo">
+          <h2 className="text-logo text-3xl">
             Serv
           </h2>
 
