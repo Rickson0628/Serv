@@ -64,7 +64,7 @@ const Header = () => {
   ] = useState(false);
 
   return (
-    <header className="flex w-full items-center justify-between px-4 py-6 shadow-md border-b border-gray-300">
+    <header className="flex fixed z-99 bg-white w-full items-center justify-between px-4 py-6 shadow-md border-b border-gray-300">
       {/* Logo */}
       <Link
         href="/dashboard"

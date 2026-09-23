@@ -1,0 +1,11 @@
+@reference "../globals.css";
+
+
+
+.page{
+  @apply px-4 py-6;
+}
+
+
+/* Typography */
+
