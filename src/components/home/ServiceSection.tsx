@@ -22,7 +22,7 @@ const ServiceSection = ({
 }: ServiceProps) => {
   return (
     <section
-      className={`mt-15 w-full md:flex bg-gray-100 ${
+      className={`w-full md:flex bg-gray-100 ${
         imagePosition === "left" ? "md:flex-row-reverse" : ""
       }`}
     >
