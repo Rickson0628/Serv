@@ -1,23 +1,42 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
+import { AiOutlineSearch } from "react-icons/ai";
+
+interface Benefit {
+  icon: ReactNode;
+  firstDescription: string;
+  secondDescription: string;
+}
 
 interface DashboardProps {
   title: string;
   description: string;
   buttonName: string;
-  desktopHeroImage: string,
+  desktopHeroImage: string;
   mobileHeroImage: string;
+  serviceBenefits: Benefit[];
 }
 
-const DashboardCard = ({title,description,buttonName,mobileHeroImage,desktopHeroImage,}: DashboardProps) => {
+const DashboardCard = ({
+  title,
+  description,
+  buttonName,
+  mobileHeroImage,
+  desktopHeroImage,
+  serviceBenefits,
+}: DashboardProps) => {
   return (
-    <article className="relative h-64 w-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm md:h-72 lg:h-90">
+    <article className="relative w-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+
+      {/* TODO: Replace with final responsive hero images if needed */}
+
       {/* Mobile / Smaller Image */}
       <Image
         src={mobileHeroImage}
         alt="Serv professional"
         fill
-        className="object-cover lg:hidden"
+        className="object-cover object-[65%_45%] md:object-[65%_15%] lg:hidden"
       />
 
       {/* Desktop Image */}
@@ -30,29 +49,81 @@ const DashboardCard = ({title,description,buttonName,mobileHeroImage,desktopHero
           className="object-cover object-[60%_45%]"
         />
       </div>
+
       {/* Gradient Overlay */}
-      <div className="absolute inset-y-0 left-0 z-1 w-[55%] bg-gradient-to-r from-white via-white/95 to-transparent lg:w-[70%] lg:via-white" />
+      <div className="absolute inset-y-0 left-0 z-[1] w-[55%] bg-gradient-to-r from-white via-white/95 to-transparent lg:w-[70%] lg:via-white" />
 
       {/* Content */}
-      <div className="relative z-10 flex h-full w-[45%] flex-col justify-center gap-4 p-6">
+      <div className="relative z-10 flex w-[60%] flex-col gap-3 px-6 py-8 md:py-10 lg:w-[70%] lg:gap-5 lg:py-12">
 
-
-        <h2 className="text-2xl md:text-4xl font-black leading-[1.05] tracking-tight">
+        {/* Heading */}
+        <h2 className="max-w-[10ch] text-[1.75rem] font-black leading-[1.02] tracking-tight sm:max-w-none md:max-w-none md:text-[2.5rem] lg:text-[3rem] xl:text-[3.25rem]">
           {title}
         </h2>
 
-        <div className="h-1.5 w-12 md:w-15 lg:w-20  lg:h-2 rounded-full bg-primary" />
+        {/* Accent Line */}
+        <div className="h-1.5 w-12 rounded-full bg-primary md:w-15 lg:hidden" />
 
-        <p className="text-muted md:text-xl">
+        {/* Description */}
+        <p className="text-[0.9rem] leading-relaxed text-muted md:text-[1.1rem] lg:text-[1.25rem] xl:text-[1.375rem]">
           {description}
         </p>
 
+        {/* Desktop Search + Button */}
+        <div className="mt-2 hidden gap-2 lg:flex">
+
+          {/* TODO: Connect service search to search/filter functionality */}
+          <div className="relative w-[28rem]">
+            <AiOutlineSearch
+              aria-hidden="true"
+              size={20}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted"
+            />
+
+            <input
+              type="search"
+              aria-label="Search for a service"
+              placeholder="Search services..."
+              className="input h-12 w-full pl-10 pr-4"
+            />
+          </div>
+
+          {/* TODO: Update booking route once booking flow is finalized */}
+          <Link
+            href="/book/customer"
+            className="btn-primary h-12 w-fit whitespace-nowrap"
+          >
+            {buttonName}
+          </Link>
+        </div>
+
+        {/* Mobile / Tablet Button */}
         <Link
           href="/book/customer"
-          className="btn-primary mt-1 w-fit whitespace-nowrap"
+          className="btn-primary w-fit whitespace-nowrap lg:hidden"
         >
           {buttonName}
         </Link>
+
+        {/* Service Benefits */}
+        {/* TODO: Move benefits to shared/static data if reused across the platform */}
+        <div className="mt-2 hidden items-center gap-15 lg:flex">
+          {serviceBenefits.map((service) => (
+            <div
+              key={`${service.firstDescription}-${service.secondDescription}`}
+              className="flex items-center gap-2"
+            >
+              <div className="flex items-center justify-center rounded-full bg-gray-100 p-4">
+                {service.icon}
+              </div>
+
+              <div className="flex flex-col font-semibold text-muted">
+                <span>{service.firstDescription}</span>
+                <span>{service.secondDescription}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </article>
   );
