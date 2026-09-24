@@ -80,10 +80,10 @@ const socialLinks: SocialLink[] = [
 
 const Footer = () => {
   return (
-    <footer className="pb-5 px-10">
+    <footer className="pb-5 px-10 bg-white">
 
       {/* Top Divider */}
-      <div className="h-1 w-full bg-gray-200 mt-12 mb-10" />
+      <div className="h-1 w-full bg-gray-200  mb-10" />
 
       {/* Main Footer Container */}
       <div className="flex flex-col lg:flex-row gap-8">

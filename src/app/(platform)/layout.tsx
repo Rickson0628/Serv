@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 
 const PlatformLayout = ({children}:{children: ReactNode}) => {
   return (
-    <div>
+    <div className="flex min-h-screen flex-col bg-gray-50">
       <Header />
       {children}
       <Footer />
