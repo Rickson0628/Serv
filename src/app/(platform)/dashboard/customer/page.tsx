@@ -5,6 +5,7 @@ import { AiOutlineStar } from "react-icons/ai";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { BiCheckShield } from "react-icons/bi";
 import { ReactNode } from "react";
+import ProviderAppointment from "@/components/dashboard/DashboardAppointment";
 
 interface Benefit {
   icon: ReactNode,
@@ -50,6 +51,8 @@ const CustomerDashboardPage = () => {
       </div>
       <DashboardCard title="Keeping you on the road" description="Trusted professionals for a smoother drive." buttonName="Book a service"
         desktopHeroImage="/dashboard/ServHeroDesk.png" mobileHeroImage="/dashboard/ServHeroMobile.png" serviceBenefits={serviceBenefits} />
+        
+        <ProviderAppointment />
     </main>
   );
 };

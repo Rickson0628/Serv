@@ -17,6 +17,7 @@ export default function Home() {
       <ServiceSection title="Turn your skills into" coloredTitle="opportunities"
       eyebrow="Work on your terms" description="Join Servas a provider and connect with customers in your area. Set your own schedule, grow your business, and do what you love." buttonText="Become a Provider" image="/home/TrustedTeam.png"  imagePosition="left" />
       <Offer />
+      
       <Footer />
 
     </section>
