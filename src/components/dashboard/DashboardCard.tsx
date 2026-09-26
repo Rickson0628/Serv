@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
+import platStyles from "../../app/(platform)/platform.module.css";
 
 interface Benefit {
   icon: ReactNode;
@@ -57,7 +58,7 @@ const DashboardCard = ({
       <div className="relative z-10 flex w-[60%] flex-col gap-3 px-6 py-8 md:py-10 lg:w-[70%] lg:gap-5 lg:py-12">
 
         {/* Heading */}
-        <h2 className="max-w-[10ch] text-[1.75rem] font-black leading-[1.02] tracking-tight sm:max-w-none md:max-w-none md:text-[2.5rem] lg:text-[3rem] xl:text-[3.25rem]">
+        <h2 className={platStyles.cardHeroTitle}>
           {title}
         </h2>
 
@@ -65,7 +66,7 @@ const DashboardCard = ({
         <div className="h-1.5 w-12 rounded-full bg-primary md:w-15 lg:hidden" />
 
         {/* Description */}
-        <p className="text-[0.9rem] leading-relaxed text-muted md:text-[1.1rem] lg:text-[1.25rem] xl:text-[1.375rem]">
+        <p className={`${platStyles.cardDescription} xl:text-[1.375rem]`}>
           {description}
         </p>
 
