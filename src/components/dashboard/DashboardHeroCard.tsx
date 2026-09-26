@@ -19,7 +19,7 @@ interface DashboardProps {
   serviceBenefits: Benefit[];
 }
 
-const DashboardCard = ({
+const DashboardHeroCard = ({
   title,
   description,
   buttonName,
@@ -130,4 +130,4 @@ const DashboardCard = ({
   );
 };
 
-export default DashboardCard;
+export default DashboardHeroCard;

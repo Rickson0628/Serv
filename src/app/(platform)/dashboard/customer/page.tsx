@@ -1,11 +1,12 @@
 import { AiOutlineSearch } from "react-icons/ai";
-import DashboardCard from "@/components/dashboard/DashboardCard";
 import platStyles from "../../platform.module.css"
 import { AiOutlineStar } from "react-icons/ai";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { BiCheckShield } from "react-icons/bi";
 import { ReactNode } from "react";
-import ProviderAppointment from "@/components/dashboard/DashboardAppointment";
+import DashboardHeroCard from "@/components/dashboard/DashboardHeroCard";
+import DashboardAppointment from "@/components/dashboard/DashboardAppointment";
+
 
 interface Benefit {
   icon: ReactNode,
@@ -49,10 +50,10 @@ const CustomerDashboardPage = () => {
           className="input w-full pl-10 pr-4"
         />
       </div>
-      <DashboardCard title="Keeping you on the road" description="Trusted professionals for a smoother drive." buttonName="Book a service"
+      <DashboardHeroCard title="Keeping you on the road" description="Trusted professionals for a smoother drive." buttonName="Book a service"
         desktopHeroImage="/dashboard/ServHeroDesk.png" mobileHeroImage="/dashboard/ServHeroMobile.png" serviceBenefits={serviceBenefits} />
         
-        <ProviderAppointment />
+        <DashboardAppointment />
     </main>
   );
 };
