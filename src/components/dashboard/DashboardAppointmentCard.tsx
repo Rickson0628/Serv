@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AiFillCheckCircle } from "react-icons/ai";
 import platStyles from "../../app/(platform)/platform.module.css";
 
-const DashboardAppointment = () => {
+const DashboardAppointmentCard = () => {
   return (
     <article className="mt-5 w-full space-y-4 lg:space-y-2 rounded-2xl border border-gray-200 bg-white bg-[radial-gradient(circle_at_90%_10%,rgba(0,122,255,0.08),transparent_55%)] px-5 py-4 shadow-sm transition-transform hover:scale-[1.01]">
 
@@ -102,4 +102,4 @@ const DashboardAppointment = () => {
   );
 };
 
-export default DashboardAppointment;
+export default DashboardAppointmentCard;

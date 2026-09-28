@@ -13,10 +13,14 @@
   @apply  max-w-[10ch] sm:max-w-none text-[1.75rem] leading-[1.02] tracking-tight md:max-w-none md:text-[2.5rem] lg:text-[3rem] xl:text-[3.25rem] font-black;
 }
 .cardTitle {
-  @apply text-[1.15rem]  font-bold leading-tight tracking-tight md:text-[1.25rem] md:text-[1.4rem] lg:text-[1.6rem] ;
+  @apply text-[1.45rem]  font-bold leading-tight tracking-tight md:text-[1.55rem] lg:text-[1.6rem] ;
 }
 .cardSubtitle {
-  @apply text-[1.15rem] font-sans font-semibold leading-tight tracking-tight md:text-[1.25rem] md:text-[1.4rem] lg:text-[1.6rem];
+  @apply text-[1.15rem] font-sans font-semibold leading-tight tracking-tight  md:text-[1.4rem] lg:text-[1.6rem];
+}
+
+.cardLowerSubtitle {
+  @apply text-[1rem] font-bold leading-tight tracking-[-0.01em] md:text-[1.1rem] lg:text-[1.2rem];
 }
 
 .cardDescription{
