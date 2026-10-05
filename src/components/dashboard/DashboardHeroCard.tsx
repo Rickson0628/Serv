@@ -28,7 +28,7 @@ const DashboardHeroCard = ({
   serviceBenefits,
 }: DashboardProps) => {
   return (
-    <article className="relative w-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-tranform hover:scale-101 ">
+    <article className="relative w-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
 
       {/* TODO: Replace with final responsive hero images if needed */}
 
