@@ -7,12 +7,19 @@ import { ReactNode } from "react";
 import DashboardHeroCard from "@/components/dashboard/DashboardHeroCard";
 import DashboardAppointmentCard from "@/components/dashboard/DashboardAppointmentCard";
 import DashboardCard from "@/components/dashboard/DashboardCard";
+import DashboardLearnMore from "@/components/dashboard/DashboardLearnMore";
 
 
 interface Benefit {
   icon: ReactNode,
   firstDescription: string,
   secondDescription: string
+}
+
+interface Service {
+  image: string,
+  title: string,
+  link: string
 }
 
 interface Service {
@@ -43,23 +50,23 @@ const popularServices: Service[] = [
   {
     image: "/dashboard/CarRepair.png",
     title: "Mechanical Repair",
-    link:"/booking/auto-mechanic"
+    link: "/booking/auto-mechanic"
   },
   {
     image: "/dashboard/BodyRepair.png",
     title: "Body Work",
-    link:"/booking/auto-body"
+    link: "/booking/auto-body"
   },
   {
     image: "/dashboard/WindshieldRepair.png",
     title: "Windshield Repair",
-     link:"/booking/auto-windshield"
+    link: "/booking/auto-windshield"
   },
   {
     image: "/dashboard/CarDetail.png",
     title: "Vehicle Detailing",
-    link:"/booking/auto-detail"
-    
+    link: "/booking/auto-detail"
+
   },
 ]
 
@@ -90,11 +97,14 @@ const CustomerDashboardPage = () => {
 
 
       <div className={`${platStyles.cardTitle} mt-5 pl-2`}>Popular Services</div>
-     <div className="mt-3 grid w-full grid-cols-1 gap-4 pl-2 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-3 grid w-full grid-cols-1 gap-4 pl-2 sm:grid-cols-2 lg:grid-cols-4">
         {popularServices.map((service) => (
           <DashboardCard href={service.link} title={service.title} image={service.image} key={service.title} />
         ))}
       </div>
+      
+      <DashboardLearnMore firstDescription="Find trusted local" secondDescription="professionals in minutes"/>
+
     </main>
   );
 };
