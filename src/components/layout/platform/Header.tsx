@@ -66,6 +66,7 @@ const Header = () => {
   return (
     <header className="flex fixed z-99 bg-white w-full items-center justify-between px-4 py-6 shadow-md border-b border-gray-300">
       {/* Logo */}
+      {/* TODO: Link href connection to dashboard proper route */}
       <Link
         href="/dashboard"
         className="text-logo text-4xl"
