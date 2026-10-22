@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { AiOutlineMail } from "react-icons/ai";
 import { BiArrowBack } from "react-icons/bi";
@@ -12,8 +12,14 @@ import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 
 import authStyles from "../authentication.module.css";
+import AccountRoleSelector, {
+  type AccountRole,
+} from "@/components/authentication/AccountRoleSelector";
+
+
 
 interface ForgotPasswordFormData {
+  role: AccountRole;
   email: string;
 }
 
@@ -32,9 +38,11 @@ const ForgotPage = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<ForgotPasswordFormData>({
     defaultValues: {
+      role: "customer",
       email: "",
     },
   });
@@ -152,9 +160,24 @@ const ForgotPage = () => {
             </h1>
 
             <p className="text-body text-muted mt-2">
-              No worries. Enter your email and we&apos;ll send you a
-              6-digit code to reset your password.
+             Select your account type and enter your email to receive a 6-digit password reset code.
             </p>
+          </div>
+          {/* Role Container */}
+
+          <div className="mb-6">
+            <p className="text-label mb-3">Account Type</p>
+
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <AccountRoleSelector
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
           </div>
 
           {/* Email Form */}
