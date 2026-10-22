@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 
 import { BsFacebook } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
@@ -17,8 +17,12 @@ import {
 
 import Button from "@/components/ui/Button";
 import authStyles from "../authentication.module.css";
+import AccountRoleSelector, {
+  type AccountRole,
+} from "@/components/authentication/AccountRoleSelector";
 
 interface RegisterFormData {
+  role: AccountRole
   firstName: string;
   lastName: string;
   email: string;
@@ -38,6 +42,7 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm<RegisterFormData>({
     defaultValues: {
+      role: 'customer',
       firstName: "",
       lastName: "",
       email: "",
@@ -94,6 +99,23 @@ const RegisterPage = () => {
             <p className="text-body text-muted mt-2">
               Create your account to get started
             </p>
+          </div>
+
+          {/* Register as Container */}
+
+          <div className="mb-6">
+            <p className="text-label mb-3">Sign up as</p>
+
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <AccountRoleSelector
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
           </div>
 
           {/* Social Login Container */}
