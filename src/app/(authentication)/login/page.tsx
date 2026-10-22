@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { BsFacebook } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
@@ -17,39 +17,72 @@ import {
 import Button from "@/components/ui/Button";
 import authStyles from "../authentication.module.css";
 
+import AccountRoleSelector, {
+  type AccountRole,
+} from "@/components/authentication/AccountRoleSelector";
+import { useRouter } from "next/navigation";
+
+
 interface LoginFormData {
   email: string;
   password: string;
   remember: boolean;
+  role: AccountRole;
 }
 
 const LoginPage = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<LoginFormData>({
     defaultValues: {
       email: "",
       password: "",
       remember: false,
+      role: "customer",
     },
   });
 
-  function submitForm(data: LoginFormData): void {
+  async function submitForm(data: LoginFormData) {
     // TODO: Connect login form to authentication API/backend
     // TODO: Handle successful login and redirect user
     // TODO: Handle invalid credentials / server errors
     console.log(data);
+    try {
+      const response = await fetch("https://serv-api.vercel.app/api/auth/login", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+          role: data.role,
+        }),
+
+      });
+
+      const result = await response.json();
+
+      console.log(result.message);
+      router.push(`/dashboard/${data.role}`)
+
+    } catch (error) {
+      console.error('Error posting data:', error)
+    }
+
   }
 
   return (
     <div className={authStyles.page}>
 
+
+
       {/* Auth Prompt */}
-      <div className={authStyles.prompt}>
+      <div className={`${authStyles.prompt} mb-8`}>
         <span className="text-eyebrow">
           Don&apos;t have an account?
         </span>
@@ -69,7 +102,7 @@ const LoginPage = () => {
 
           {/* Header Container */}
           <div className={authStyles.header}>
-           <h1 className={authStyles.heading}>
+            <h1 className={authStyles.heading}>
               Welcome back
             </h1>
 
@@ -77,6 +110,23 @@ const LoginPage = () => {
               Log in to your account to continue
             </p>
           </div>
+          {/* Log in as Container */}
+
+          <div className="mb-6">
+            <p className="text-label mb-3">Log in as</p>
+
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <AccountRoleSelector
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+          </div>
+
 
           {/* Social Login Container */}
           <div className={authStyles.social}>
@@ -222,7 +272,7 @@ const LoginPage = () => {
                 </span>
               </label>
 
-         
+
               <Link
                 href="/forgot-password"
                 className="text-primary"
