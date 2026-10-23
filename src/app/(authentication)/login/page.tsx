@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
-
 import { BsFacebook } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 
@@ -21,7 +20,7 @@ import AccountRoleSelector, {
   type AccountRole,
 } from "@/components/authentication/AccountRoleSelector";
 import { useRouter } from "next/navigation";
-
+import { login } from '@/lib/api/auth'
 
 interface LoginFormData {
   email: string;
@@ -33,12 +32,13 @@ interface LoginFormData {
 const LoginPage = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     defaultValues: {
       email: "",
@@ -49,37 +49,28 @@ const LoginPage = () => {
   });
 
   async function submitForm(data: LoginFormData) {
-    // TODO: Connect login form to authentication API/backend
-    // TODO: Handle successful login and redirect user
-    // TODO: Handle invalid credentials / server errors
-    console.log(data);
+    setLoginError(null);
     try {
-      const response = await fetch("https://serv-api.vercel.app/api/auth/login", {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-          role: data.role,
-        }),
+      const result = await login({
+        email: data.email,
+        password: data.password,
+        role: data.role,
+      })
 
-      });
-
-      const result = await response.json();
-
-      console.log(result.message);
-      router.push(`/dashboard/${data.role}`)
+      router.push(`/dashboard/${result.user.role}`)
 
     } catch (error) {
-      console.error('Error posting data:', error)
+      if (error instanceof Error) {
+        setLoginError(error.message);
+      } else {
+        setLoginError("Something went wrong. Please try again.");
+      }
     }
 
   }
 
   return (
     <div className={authStyles.page}>
-
-
 
       {/* Auth Prompt */}
       <div className={`${authStyles.prompt} mb-8`}>
@@ -220,11 +211,7 @@ const LoginPage = () => {
                 <input
                   {...register("password", {
                     required: "Password is required",
-                    minLength: {
-                      value: 8,
-                      message:
-                        "Password must be at least 8 characters",
-                    },
+              
                   })}
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -281,12 +268,17 @@ const LoginPage = () => {
               </Link>
             </div>
 
+            {loginError && <p role="alert" className={authStyles.error}>
+              {loginError}
+            </p>}
+
             {/* Submit Button */}
             <Button
               type="submit"
               className="btn-primary w-full"
+              disabled={isSubmitting}
             >
-              Login
+              {isSubmitting ? "Logging in..." : "Login"}
             </Button>
           </form>
 
@@ -309,11 +301,9 @@ const LoginPage = () => {
             .
           </p>
 
-          {/* TODO: Add loading state while login is processing */}
-          {/* TODO: Disable submit button while processing */}
-          {/* TODO: Add server error message */}
-          {/* TODO: Redirect after successful login */}
-          {/* TODO: Add authentication/session handling */}
+
+
+         
         </div>
       </main>
     </div>
