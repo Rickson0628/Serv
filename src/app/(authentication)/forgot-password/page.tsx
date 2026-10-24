@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
@@ -9,32 +9,22 @@ import { AiOutlineMail } from "react-icons/ai";
 import { BiArrowBack } from "react-icons/bi";
 
 import Button from "@/components/ui/Button";
-import Modal from "@/components/ui/Modal";
+import VerificationCodeModal from "@/components/authentication/VerificationCodeModal";
 
 import authStyles from "../authentication.module.css";
 import AccountRoleSelector, {
   type AccountRole,
 } from "@/components/authentication/AccountRoleSelector";
 
-
-
 interface ForgotPasswordFormData {
   role: AccountRole;
   email: string;
 }
 
-interface CodeFormData {
-  code: string[];
-}
-
 const ForgotPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState("");
-  const [timer, setTimer] = useState(0);
 
-  const codeInputRefs = useRef<(HTMLInputElement | null)[]>([]);
-
-  // Forgot Password Form
   const {
     register,
     handleSubmit,
@@ -47,82 +37,29 @@ const ForgotPage = () => {
     },
   });
 
-  // Verification Code Form
-  const {
-    register: registerCode,
-    handleSubmit: handleCodeSubmit,
-    reset: resetCode,
-    formState: { errors: codeErrors },
-  } = useForm<CodeFormData>({
-    defaultValues: {
-      code: ["", "", "", "", "", ""],
-    },
-  });
-
-  // Countdown Timer
-  useEffect(() => {
-    if (timer <= 0) return;
-
-    const timeoutId = setTimeout(() => {
-      setTimer((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearTimeout(timeoutId);
-  }, [timer]);
-
-  // Format Timer
-  function formatTime(timeInSeconds: number): string {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  }
-
-  // Submit Email
   function submitEmail(data: ForgotPasswordFormData): void {
-    // TODO: Send password reset code through authentication API.
-    // TODO: Check if the email exists.
-    // TODO: Handle server/network errors.
-    // TODO: Only open modal after the code is successfully sent.
-
-    console.log("Send code to:", data.email);
+    // TODO: Call forgot-password API with email and role.
+    // For now, open modal for UI testing.
 
     setSubmittedEmail(data.email);
-    setTimer(60);
-    resetCode();
     setIsModalOpen(true);
   }
 
-  // Submit Verification Code
-  function submitCode(data: CodeFormData): void {
-    const authenticationCode = data.code.join("");
+  async function verifyCode(code: string): Promise<void> {
+    // TODO: Call verify-reset-code API.
+    // Redirect to /reset-password after success.
 
-    // TODO: Verify authentication code through authentication API.
-    // TODO: Handle incorrect verification code.
-    // TODO: Handle expired verification code.
-    // TODO: Redirect to /reset-password after successful verification.
+    if (!/^\d{6}$/.test(code)) {
+      throw new Error("Enter all six digits.");
+    }
 
-    console.log("Authentication Code:", authenticationCode);
+    throw new Error("Verification API is not connected yet.");
   }
 
-  // Resend Verification Code
-  function resendCode(): void {
-    // TODO: Send another verification code through authentication API.
-    // TODO: Handle resend failure.
+  async function resendCode(): Promise<void> {
+    // TODO: Call resend-reset-code API.
 
-    console.log("Resend code to:", submittedEmail);
-
-    resetCode();
-    setTimer(60);
-
-    codeInputRefs.current[0]?.focus();
-  }
-
-  // Close Verification Modal
-  function closeModal(): void {
-    setIsModalOpen(false);
-    setTimer(0);
-    resetCode();
+    throw new Error("Resend API is not connected yet.");
   }
 
   return (
@@ -144,8 +81,7 @@ const ForgotPage = () => {
       {/* Forgot Password Container */}
       <main className={authStyles.main}>
         <div className={`${authStyles.card} gap-4`}>
-
-          {/* Header Container */}
+          {/* Header */}
           <div className={authStyles.header}>
             <Image
               src="/authentication/lock.png"
@@ -160,13 +96,16 @@ const ForgotPage = () => {
             </h1>
 
             <p className="text-body text-muted mt-2">
-             Select your account type and enter your email to receive a 6-digit password reset code.
+              Select your account type and enter your email
+              to receive a 6-digit password reset code.
             </p>
           </div>
-          {/* Role Container */}
 
+          {/* Account Role */}
           <div className="mb-6">
-            <p className="text-label mb-3">Account Type</p>
+            <p className="text-label mb-3">
+              Account Type
+            </p>
 
             <Controller
               name="role"
@@ -185,7 +124,6 @@ const ForgotPage = () => {
             className={`${authStyles.form} gap-4`}
             onSubmit={handleSubmit(submitEmail)}
           >
-            {/* Email Field */}
             <div className={authStyles.field}>
               <label
                 htmlFor="email"
@@ -224,7 +162,6 @@ const ForgotPage = () => {
               )}
             </div>
 
-            {/* Send Code */}
             <Button
               type="submit"
               className="btn-primary w-full"
@@ -233,7 +170,6 @@ const ForgotPage = () => {
             </Button>
           </form>
 
-          {/* Back to Login */}
           <Link
             href="/login"
             className={authStyles.backLink}
@@ -244,177 +180,16 @@ const ForgotPage = () => {
         </div>
       </main>
 
-      {/* Verification Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        className={authStyles.backdrop}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="verification-title"
-      >
-        <div className={authStyles.dialog}>
-
-          {/* Close Button */}
-          <Button
-            type="button"
-            className={authStyles.closeButton}
-            onClick={closeModal}
-            aria-label="Close verification dialog"
-          >
-            ×
-          </Button>
-
-          {/* Email Image */}
-          <Image
-            src="/authentication/email.png"
-            alt=""
-            width={200}
-            height={200}
-          />
-
-          {/* Modal Header */}
-          <div className="flex flex-col items-center text-center">
-            <h2
-              id="verification-title"
-              className={authStyles.heading}
-            >
-              Enter authentication code
-            </h2>
-
-            <p className="text-muted mt-2">
-              We&apos;ve sent you a 6-digit code to
-            </p>
-
-            <p className="font-semibold">
-              {submittedEmail}
-            </p>
-          </div>
-
-          {/* Verification Form */}
-          <form
-            onSubmit={handleCodeSubmit(submitCode)}
-            className={authStyles.verificationForm}
-          >
-            {/* Verification Inputs */}
-            <div className={authStyles.codeInputs}>
-              {Array.from({ length: 6 }, (_, index) => {
-                const {
-                  ref,
-                  onChange,
-                  ...codeField
-                } = registerCode(`code.${index}`, {
-                  required: true,
-                  pattern: /^\d$/,
-                });
-
-                return (
-                  <input
-                    key={index}
-                    {...codeField}
-
-                    ref={(element) => {
-                      // Give the input to React Hook Form
-                      ref(element);
-
-                      // Save the input so we can focus next/previous boxes
-                      codeInputRefs.current[index] = element;
-                    }}
-
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={1}
-                    autoComplete="one-time-code"
-
-                    className={authStyles.codeInput}
-
-                    aria-label={`Code digit ${index + 1}`}
-
-                    aria-invalid={
-                      codeErrors.code?.[index]
-                        ? "true"
-                        : "false"
-                    }
-
-                    onChange={(event) => {
-                      const input = event.currentTarget;
-
-                      // Remove anything that is not a number
-                      input.value = input.value.replace(
-                        /\D/g,
-                        ""
-                      );
-
-                      // Update React Hook Form
-                      onChange(event);
-
-                      // Move to next input
-                      if (
-                        input.value &&
-                        index < 5
-                      ) {
-                        codeInputRefs.current[
-                          index + 1
-                        ]?.focus();
-                      }
-                    }}
-
-                    onKeyDown={(event) => {
-                      // Move to previous input if current box is empty
-                      if (
-                        event.key === "Backspace" &&
-                        !event.currentTarget.value &&
-                        index > 0
-                      ) {
-                        codeInputRefs.current[
-                          index - 1
-                        ]?.focus();
-                      }
-                    }}
-                  />
-                );
-              })}
-            </div>
-
-            {/* Verification Error */}
-            {codeErrors.code && (
-              <span
-                className={`${authStyles.error} text-center`}
-                role="alert"
-              >
-                Enter all six digits.
-              </span>
-            )}
-
-            {/* Verify Button */}
-            <Button
-              type="submit"
-              className="btn-primary w-full"
-            >
-              Verify
-            </Button>
-
-            {/* Resend Code */}
-            <p className="text-muted text-center">
-              Didn&apos;t receive the code?{" "}
-
-              {timer > 0 ? (
-                <span className="text-muted">
-                  Resend available in{" "}
-                  {formatTime(timer)}
-                </span>
-              ) : (
-                <button
-                  type="button"
-                  onClick={resendCode}
-                  className="text-primary font-medium"
-                >
-                  Resend Code
-                </button>
-              )}
-            </p>
-          </form>
-        </div>
-      </Modal>
+      {/*  Verification Modal */}
+      {isModalOpen && (
+        <VerificationCodeModal
+          email={submittedEmail}
+          title="Enter authentication code"
+          onClose={() => setIsModalOpen(false)}
+          onVerify={verifyCode}
+          onResend={resendCode}
+        />
+      )}
     </div>
   );
 };

@@ -1,12 +1,10 @@
 "use client";
-
 import { useState } from "react";
 import Link from "next/link";
 import { Controller, useForm, useWatch } from "react-hook-form";
-
 import { BsFacebook } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
-
+import { useRouter } from "next/navigation";
 import {
   AiOutlineEye,
   AiOutlineEyeInvisible,
@@ -21,6 +19,11 @@ import AccountRoleSelector, {
   type AccountRole,
 } from "@/components/authentication/AccountRoleSelector";
 
+import { signup, verifyCode,  resendSignupVerificationCode } from '@/lib/api/auth'
+import { BiLockAlt } from "react-icons/bi";
+import { FiCheckCircle } from "react-icons/fi";
+import VerificationCodeModal from "@/components/authentication/VerificationCodeModal";
+
 interface RegisterFormData {
   role: AccountRole
   firstName: string;
@@ -32,14 +35,18 @@ interface RegisterFormData {
 }
 
 const RegisterPage = () => {
+  const router = useRouter();
+  const [submitEmail, setSubmitEmail] = useState("");
+  const [submitAccountRole, setSubmitAccountRole] = useState<AccountRole>("customer");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     defaultValues: {
       role: 'customer',
@@ -57,16 +64,49 @@ const RegisterPage = () => {
     name: "password",
   });
 
-  function submitForm(data: RegisterFormData): void {
-    // TODO: Connect registration form to authentication API/backend
-    // TODO: Hash/store password securely on the server
-    // TODO: Check whether email already exists
-    // TODO: Create user account in database
-    // TODO: Create authenticated session after successful registration
-    // TODO: Redirect user after successful registration
-    // TODO: Handle server/network errors
+  async function submitForm(data: RegisterFormData) {
+    setLoginError(null);
+    try {
+       await signup({
+        role: data.role,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password,
+        agreeToTerms: data.agreeToTerms,
+      })
 
-    console.log(data);
+      setSubmitEmail(data.email);
+      setSubmitAccountRole(data.role)
+      setIsModalOpen(true);
+
+    } catch (err) {
+      if (err instanceof Error) {
+        setLoginError(err.message || "Signup Failed")
+      } else {
+        setLoginError("Something went wrong. Please try again.");
+      }
+    }
+
+  }
+
+
+
+  async function verify(code: string): Promise<void> {
+    const result = await verifyCode({
+      email: submitEmail,
+      role: submitAccountRole,
+      verificationCode: code,
+    });
+
+    router.push(`/dashboard/${result.user.role}`);
+  }
+
+  async function resendCode(): Promise<void> {
+     await resendSignupVerificationCode({
+      email: submitEmail,
+      role: submitAccountRole,
+    });
   }
 
   return (
@@ -261,61 +301,122 @@ const RegisterPage = () => {
               )}
             </div>
 
-            {/* Password Field */}
+
             <div className={authStyles.field}>
               <label
-                htmlFor="password"
                 className="text-label"
+                htmlFor="password"
               >
                 Password
               </label>
 
+              {/* New Password Input and Visibility Button Container */}
               <div className="relative">
-                <AiOutlineLock
+                {/* Lock Icon Inside the Input */}
+                <BiLockAlt
                   className={authStyles.fieldIcon}
+                  aria-hidden="true"
                 />
 
                 <input
+                  id="newPassword"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  autoComplete="password"
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
                       value: 8,
-                      message:
-                        "Password must be at least 8 characters",
+                      message: "Password must be at least 8 characters",
+                    },
+                    validate: {
+                      uppercase: (value) =>
+                        /[A-Z]/.test(value) ||
+                        "Password must include an uppercase letter",
+                      lowercase: (value) =>
+                        /[a-z]/.test(value) ||
+                        "Password must include a lowercase letter",
+                      number: (value) =>
+                        /\d/.test(value) ||
+                        "Password must include a number",
                     },
                   })}
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
                   className={`${authStyles.input} ${authStyles.inputWithActions}`}
+                  aria-invalid={
+                    errors.password ? "true" : "false"
+                  }
+                  aria-describedby="new-password-requirements new-password-error"
                 />
 
+                {/* Show or Hide New Password Button */}
                 <Button
                   type="button"
-                  onClick={() =>
-                    setShowPassword((prev) => !prev)
-                  }
                   className={authStyles.fieldAction}
+                  onClick={() =>
+                    setShowPassword((previous) => !previous)
+                  }
                   aria-label={
                     showPassword
-                      ? "Hide password"
-                      : "Show password"
+                      ? "Hide new password"
+                      : "Show new password"
                   }
                 >
                   {showPassword ? (
-                    <AiOutlineEyeInvisible />
+                    <AiOutlineEyeInvisible aria-hidden="true" />
                   ) : (
-                    <AiOutlineEye />
+                    <AiOutlineEye aria-hidden="true" />
                   )}
                 </Button>
               </div>
 
+              {/* Password Requirements List */}
+              <ul
+                id="new-password-requirements"
+                className="space-y-2"
+                aria-label="Password requirements"
+              >
+                <li
+                  className={`flex items-center gap-2 text-sm ${password.length >= 8 ? "text-green-600" : "text-muted"}`}
+                >
+                  <FiCheckCircle aria-hidden="true" />
+                  At least 8 characters
+                </li>
+
+                <li
+                  className={`flex items-center gap-2 text-sm ${/[A-Z]/.test(password) ? "text-green-600" : "text-muted"}`}
+                >
+                  <FiCheckCircle aria-hidden="true" />
+                  Includes an uppercase letter
+                </li>
+
+                <li
+                  className={`flex items-center gap-2 text-sm ${/[a-z]/.test(password) ? "text-green-600" : "text-muted"}`}
+                >
+                  <FiCheckCircle aria-hidden="true" />
+                  Includes a lowercase letter
+                </li>
+
+                <li
+                  className={`flex items-center gap-2 text-sm ${/\d/.test(password) ? "text-green-600" : "text-muted"}`}
+                >
+                  <FiCheckCircle aria-hidden="true" />
+                  Includes a number
+                </li>
+              </ul>
+
+              {/* New Password Validation Error */}
               {errors.password && (
-                <span className={authStyles.error}>
+                <span
+                  id="new-password-error"
+                  className={authStyles.error}
+                  role="alert"
+                >
                   {errors.password.message}
                 </span>
               )}
+
             </div>
+
 
             {/* Confirm Password Field */}
             <div className={authStyles.field}>
@@ -348,6 +449,7 @@ const RegisterPage = () => {
                   placeholder="Confirm your password"
                   className={`${authStyles.input} ${authStyles.inputWithActions}`}
                 />
+
 
                 <Button
                   type="button"
@@ -423,12 +525,17 @@ const RegisterPage = () => {
               )}
             </div>
 
+
+            {loginError && <p role="alert" className={authStyles.error}>
+              {loginError}
+            </p>}
             {/* Submit Button */}
             <Button
               type="submit"
               className="btn-primary w-full"
+              disabled={isSubmitting}
             >
-              Create Account
+              {isSubmitting ? "Creating Account..." : "Create Account"}
             </Button>
           </form>
 
@@ -440,6 +547,21 @@ const RegisterPage = () => {
           {/* TODO: Redirect authenticated user after signup */}
           {/* TODO: Add authentication/session handling */}
         </div>
+
+
+
+        {/*  Verification Modal */}
+        {isModalOpen && (
+          <VerificationCodeModal
+            email={submitEmail}
+            title="Enter authentication code"
+            onClose={() => setIsModalOpen(false)}
+            onVerify={verify}
+            onResend={resendCode}
+          />
+        )}
+
+
       </main>
     </div>
   );
