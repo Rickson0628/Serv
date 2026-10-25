@@ -12,7 +12,7 @@ interface VerificationCodeModalProps {
   onClose: () => void;
   onVerify: (code: string) => Promise<void> | void;
   onResend: () => Promise<void> | void;
-  description:string,
+  description?:string,
   title?: string;
   resendCooldownSeconds?: number;
 }
