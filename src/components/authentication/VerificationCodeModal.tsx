@@ -12,6 +12,7 @@ interface VerificationCodeModalProps {
   onClose: () => void;
   onVerify: (code: string) => Promise<void> | void;
   onResend: () => Promise<void> | void;
+  description:string,
   title?: string;
   resendCooldownSeconds?: number;
 }
@@ -21,6 +22,7 @@ export default function VerificationCodeModal({
   onClose,
   onVerify,
   onResend,
+  description = "We've sent you a 6-digit code to",
   title = "Enter authentication code",
   resendCooldownSeconds = 60,
 }: VerificationCodeModalProps) {
@@ -227,7 +229,7 @@ export default function VerificationCodeModal({
           </h2>
 
           <p className="text-muted mt-2">
-            We&apos;ve sent you a 6-digit code to
+            {description}
           </p>
 
           <p className="font-semibold">{email}</p>
