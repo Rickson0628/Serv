@@ -35,7 +35,7 @@ export default function VerificationCodeModal({
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const dialogRef = useRef<HTMLDivElement>(null);
 

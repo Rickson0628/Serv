@@ -221,7 +221,7 @@ interface ResetPasswordResponse{
   message: string;
 }
 
-export async function resetPassword(credentials: ResetPasswordCredentials): Promise<ResetPasswordCredentials>{
+export async function resetPassword(credentials: ResetPasswordCredentials): Promise<ResetPasswordResponse>{
   const response = await fetch('/backend/api/auth/reset-password',{
     method: "PATCH",
     headers:{
