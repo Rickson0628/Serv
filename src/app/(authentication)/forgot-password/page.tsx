@@ -15,6 +15,9 @@ import authStyles from "../authentication.module.css";
 import AccountRoleSelector, {
   type AccountRole,
 } from "@/components/authentication/AccountRoleSelector";
+import { forgotPassword,resendPasswordResetCode, verifyResetCode}  from '@/lib/api/auth'
+import { useRouter } from "next/navigation";
+
 
 interface ForgotPasswordFormData {
   role: AccountRole;
@@ -22,14 +25,18 @@ interface ForgotPasswordFormData {
 }
 
 const ForgotPage = () => {
+
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [submittedAccountRole, setSubmittedAccountRole] = useState<AccountRole>("customer");
+  const [forgotError, setForgotError] = useState<string | null>(null);
   const [submittedEmail, setSubmittedEmail] = useState("");
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting},
   } = useForm<ForgotPasswordFormData>({
     defaultValues: {
       role: "customer",
@@ -37,29 +44,47 @@ const ForgotPage = () => {
     },
   });
 
-  function submitEmail(data: ForgotPasswordFormData): void {
-    // TODO: Call forgot-password API with email and role.
-    // For now, open modal for UI testing.
+  
+async function submitForm(data: ForgotPasswordFormData): Promise<void> {
+  setForgotError(null);
+
+  try {
+    await forgotPassword({
+      email: data.email,
+      role: data.role,
+    });
 
     setSubmittedEmail(data.email);
+    setSubmittedAccountRole(data.role);
     setIsModalOpen(true);
+
+  } catch (err) {
+    setForgotError(
+      err instanceof Error
+        ? err.message
+        : "Something went wrong. Please try again."
+    );
   }
+}
 
+  
   async function verifyCode(code: string): Promise<void> {
-    // TODO: Call verify-reset-code API.
-    // Redirect to /reset-password after success.
+   
+    await verifyResetCode({
+      email: submittedEmail, 
+      role: submittedAccountRole, 
+      code
+    });
 
-    if (!/^\d{6}$/.test(code)) {
-      throw new Error("Enter all six digits.");
-    }
+    router.push('/reset-password');
 
-    throw new Error("Verification API is not connected yet.");
   }
 
   async function resendCode(): Promise<void> {
-    // TODO: Call resend-reset-code API.
-
-    throw new Error("Resend API is not connected yet.");
+    await resendPasswordResetCode({
+      email: submittedEmail, 
+      role: submittedAccountRole
+    });
   }
 
   return (
@@ -122,7 +147,7 @@ const ForgotPage = () => {
           {/* Email Form */}
           <form
             className={`${authStyles.form} gap-4`}
-            onSubmit={handleSubmit(submitEmail)}
+            onSubmit={handleSubmit(submitForm)}
           >
             <div className={authStyles.field}>
               <label
@@ -162,11 +187,16 @@ const ForgotPage = () => {
               )}
             </div>
 
+            {forgotError && (<p role="alert" className={authStyles.error}>
+              {forgotError}</p> 
+              )}
+
             <Button
               type="submit"
               className="btn-primary w-full"
+              disabled={isSubmitting}
             >
-              Send Code
+              {isSubmitting? "Sending..." : "Send Code"}
             </Button>
           </form>
 
@@ -185,6 +215,7 @@ const ForgotPage = () => {
         <VerificationCodeModal
           email={submittedEmail}
           title="Enter authentication code"
+          description="If an account exists, you'll receive a 6-digit code at"
           onClose={() => setIsModalOpen(false)}
           onVerify={verifyCode}
           onResend={resendCode}
