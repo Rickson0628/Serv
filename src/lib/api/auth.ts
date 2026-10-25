@@ -130,3 +130,85 @@ export async function resendSignupVerificationCode(credentials : ResendVerificat
   return result;
 
 }
+
+interface ForgotPasswordCredentials{
+  email: string;
+  role: AccountRole;
+}
+
+interface ForgotPasswordResponse{
+  message: string;
+}
+
+export async function forgotPassword(credentials:  ForgotPasswordCredentials): Promise<ForgotPasswordResponse>{
+  const response = await fetch('/backend/api/auth/forgot-password', {
+    method: "POST",
+    headers:{
+      'Content-Type': "application/json"
+    },
+    body: JSON.stringify(credentials),
+  });
+
+  const result = await response.json();
+
+  if(!response.ok){
+    throw new Error(result.message ||  "Failed to send password reset code." );
+  }
+
+  return result;
+}
+
+interface ResendPasswordResetCredentials{
+  email: string;
+  role: AccountRole;
+}
+
+interface ResendPasswordResetResponse{
+  message: string;
+}
+
+export async function resendPasswordResetCode(credentials: ResendPasswordResetCredentials): Promise<ResendPasswordResetResponse>{
+  const response = await fetch('/backend/api/auth/resend-reset-code', {
+    method: "POST",
+    headers:{
+      'Content-Type': "application/json"
+    },
+    body: JSON.stringify(credentials),
+  });
+
+  const result = await response.json();
+
+  if(!response.ok){
+    throw new Error(result.message ||  "Failed to resend password reset code." );
+  }
+
+  return result;
+}
+
+interface VerifyResetCodeCredentials{
+  email: string;
+  code: string;
+  role: AccountRole;
+}
+
+interface VerifyResetCodeResponse{
+  message: string;
+}
+
+export async function verifyResetCode(credentials: VerifyResetCodeCredentials): Promise<VerifyResetCodeResponse>{
+  const response = await fetch('/backend/api/auth/verify-reset-code', {
+    method: "POST",
+    headers:{
+      'Content-Type': "application/json"
+    },
+    body: JSON.stringify(credentials),
+  });
+
+  const result = await response.json();
+
+  if(!response.ok){
+    throw new Error(result.message ||  "Failed to verify password reset code." );
+  }
+
+  return result;
+}
