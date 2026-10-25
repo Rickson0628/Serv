@@ -12,6 +12,7 @@ import Button from "@/components/ui/Button";
 import authStyles from "../authentication.module.css";
 import Modal from "@/components/ui/Modal";
 import Link from "next/link";
+import { resetPassword } from "@/lib/api/auth";
 
 interface NewPasswordData {
   newPassword: string;
@@ -21,12 +22,13 @@ interface NewPasswordData {
 const ResetPasswordPage = () => {
   const [isShowNewPassword, setIsShowNewPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+  const [resetError, setResetError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting},
   } = useForm<NewPasswordData>({
     defaultValues: {
       newPassword: "",
@@ -40,14 +42,21 @@ const ResetPasswordPage = () => {
       name: "newPassword",
     }) ?? "";
 
-  function submitNewPassword(): void {
-    // TODO: Verify the password-reset token on the server.
-    // TODO: Send the new password to the authentication API.
-    // TODO: Show an error if the server rejects the password update.
-    // TODO: After adding the backend, only open this modal when the API succeeds.
+  async function submitForm(data: NewPasswordData): Promise<void> {
+ 
+    try{
+       await resetPassword({newPassword : data.newPassword});
 
-    // Temporary frontend behavior: this runs only after form validation passes.
-    setIsModalOpen(true);
+      setIsModalOpen(true);
+    }catch(error){
+      if (error instanceof Error){
+        setResetError(error.message);
+      }
+      else{
+        setResetError("Something went wrong. Please try again.")
+      }
+    }
+
   }
 
   return (
@@ -83,7 +92,7 @@ const ResetPasswordPage = () => {
           {/* Reset Password Form */}
           <form
             className={authStyles.form}
-            onSubmit={handleSubmit(submitNewPassword)}
+            onSubmit={handleSubmit(submitForm)}
           >
             {/* New Password Field */}
             <div className={authStyles.field}>
@@ -266,13 +275,18 @@ const ResetPasswordPage = () => {
                 </span>
               )}
             </div>
-
+             
+            {resetError && (<p role="alert" className={authStyles.error}>
+              {resetError}</p> 
+              )}
             {/* Submit Button */}
             <Button
               className="btn-primary w-full"
               type="submit"
+              disabled={isSubmitting}
+             
             >
-              Update Password
+             {isSubmitting ? "Updating..." : "Update Password"} 
             </Button>
           </form>
         </div>
@@ -292,7 +306,7 @@ const ResetPasswordPage = () => {
             width={250} 
             height={250}/>
 
-            <h1 className={authStyles.heading}>Password Updated!</h1>
+            <h2  id="password-updated-title" className={authStyles.heading}>Password Updated!</h2>
             <p className="text-muted text-center my-4">Your password has been successfully changed. You can now log in with your new password</p>
             <Link href="/login" className="btn-primary w-full mb-4">Go to Login</Link>
         </div>

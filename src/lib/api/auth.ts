@@ -212,3 +212,30 @@ export async function verifyResetCode(credentials: VerifyResetCodeCredentials): 
 
   return result;
 }
+
+interface ResetPasswordCredentials{
+  newPassword: string;
+}
+
+interface ResetPasswordResponse{
+  message: string;
+}
+
+export async function resetPassword(credentials: ResetPasswordCredentials): Promise<ResetPasswordResponse>{
+  const response = await fetch('/backend/api/auth/reset-password',{
+    method: "PATCH",
+    headers:{
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials),
+  })
+
+  const result =await response.json();
+
+  if (!response.ok){
+    throw new Error(result.message || "Failed to reset password")
+  }
+
+  return result;
+
+}
