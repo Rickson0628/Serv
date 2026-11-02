@@ -240,7 +240,7 @@ export async function resetPassword(credentials: ResetPasswordCredentials): Prom
 
 }
 
-interface AuthenticatedUser {
+export interface AuthenticatedUser {
   _id: string;
   firstName: string;
   lastName: string;
