@@ -239,3 +239,38 @@ export async function resetPassword(credentials: ResetPasswordCredentials): Prom
   return result;
 
 }
+
+export interface AuthenticatedUser {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: AccountRole;
+  profilePicture: string;
+  phoneNumber: string;
+  isVerified: boolean;
+  termsVersion: string;
+  termsAcceptedAt: string;
+}
+
+interface GetUserResponse {
+  user: AuthenticatedUser;
+}
+
+export async function getCurrentUser(): Promise<AuthenticatedUser | null> {
+  const response = await fetch("/backend/api/auth/me", {
+    method: "GET",
+  });
+
+  if (response.status === 401) {
+    return null;
+  }
+
+  const result: GetUserResponse = await response.json();
+
+  if (!response.ok) {
+    throw new Error("Unable to retrieve user");
+  }
+
+  return result.user;
+}
