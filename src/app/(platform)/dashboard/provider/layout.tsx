@@ -1,18 +1,11 @@
-export default function DashboardLayout({
-  children,
-  stats,
-}: {
-  children: React.ReactNode;
-  stats: React.ReactNode;
-}) {
+import ProtectedRoute from "@/components/authentication/ProtectedRoute";
+
+export default function DashboardLayout({children,stats}: {children: React.ReactNode; stats: React.ReactNode;}) {
   return (
-    <div className="flex gap-10">
-      
+    <ProtectedRoute allowedRole="provider">
       {children}
-
-      
       {stats}
-
-    </div>
+    </ProtectedRoute>
+ 
   );
-}
+} 
