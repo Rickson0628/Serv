@@ -10,6 +10,7 @@ import DashboardLearnMore from "@/components/dashboard/DashboardLearnMore";
 
 import platStyles from "../../platform.module.css";
 
+
 interface Benefit {
   icon: ReactNode;
   firstDescription: string;
