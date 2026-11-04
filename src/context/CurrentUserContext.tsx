@@ -11,6 +11,7 @@ import {
 
 import {
   getCurrentUser,
+  logout as logoutRequest,
   type AuthenticatedUser,
 } from "@/lib/api/auth";
 
@@ -19,6 +20,7 @@ interface CurrentUserContextType {
   isLoading: boolean;
   error: string | null;
   refreshUser: () => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 interface CurrentUserProviderProps {
@@ -36,11 +38,17 @@ export function CurrentUserProvider({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+
   // Tracks the most recent session request
   const latestRequestId = useRef(0);
+  const isSigningOutRef = useRef(false);
 
   // Manually refresh the current user
   const refreshUser = useCallback(async (): Promise<void> => {
+    if(isSigningOutRef.current){
+      return
+    }
+
     const requestId = ++latestRequestId.current;
 
     setIsLoading(true);
@@ -65,6 +73,27 @@ export function CurrentUserProvider({
         setIsLoading(false);
       }
     }
+  }, []);
+
+  const signOut = useCallback(async (): Promise<void> => {
+    if (isSigningOutRef.current) {
+      return;
+    }
+    isSigningOutRef.current = true;
+    latestRequestId.current += 1;
+    setIsLoading(true);
+   
+    try {
+      await logoutRequest();
+      latestRequestId.current += 1;
+      setUser(null);
+      setError(null);
+
+    } finally {
+      isSigningOutRef.current = false;
+      setIsLoading(false);
+    }
+
   }, []);
 
 
@@ -110,6 +139,7 @@ export function CurrentUserProvider({
         isLoading,
         error,
         refreshUser,
+        signOut
       }}
     >
       {children}

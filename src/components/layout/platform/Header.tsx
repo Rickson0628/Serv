@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-
+import { useRouter } from "next/navigation";
 import {
   FiBell,
   FiHelpCircle,
@@ -14,6 +14,7 @@ import {
   FiMessageSquare,
   FiSettings,
 } from "react-icons/fi";
+
 
 interface ProfileLink {
   icon: ReactNode;
@@ -40,7 +41,8 @@ const profileLinks: ProfileLink[] = [
 ];
 
 const Header = () => {
-  const { user, isLoading, error, refreshUser } = useCurrentUser();
+  const router = useRouter();
+  const { user, isLoading, error, refreshUser, signOut } = useCurrentUser();
 
   const [isProfileModalOpen, setIsProfileModalOpen] =
     useState(false);
@@ -48,6 +50,9 @@ const Header = () => {
   const [isNotificationModalOpen, setIsNotificationModalOpen] =
     useState(false);
 
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const [logoutError, setLogoutError] = useState<null | string>(null)
   // TODO: Connect notification state to backend
   const hasNotification = true;
 
@@ -58,7 +63,23 @@ const Header = () => {
 
   const profilePicture =
     user?.profilePicture || "/dashboard/icon.jpg";
+  async function logoutUser() {
+    if (isLoggingOut) return;
 
+    setLogoutError(null);
+    setIsLoggingOut(true);
+
+    try {
+      await signOut();
+      router.replace("/login");
+    } catch (error) {
+      setLogoutError(
+        error instanceof Error ? error.message : "Error logging out"
+      );
+    } finally {
+      setIsLoggingOut(false);
+    }
+  }
   return (
     <header className="flex fixed z-99 bg-white w-full items-center justify-between px-4 py-6 shadow-md border-b border-gray-300">
       {/* Logo */}
@@ -68,11 +89,11 @@ const Header = () => {
       >
         Serv
       </Link>
-      
+
       {/* User Actions */}
       <div className="flex items-center gap-3">
         {/* Session Loading */}
-        {isLoading ? (
+        {isLoading && !isLoggingOut ? (
           <div
             className="h-10 w-10 animate-pulse rounded-full bg-gray-200"
             aria-label="Checking session"
@@ -191,23 +212,27 @@ const Header = () => {
                     ))}
                   </div>
 
-                  {/* Logout — API integration pending */}
+                  {/* Logout  */}
                   <div className="border-t border-gray-100 pt-2">
                     <Button
                       type="button"
                       className="flex w-full items-center gap-3 rounded-md px-3 py-3 text-left text-sm transition-colors hover:bg-gray-50 hover:text-primary"
-                      onClick={() => {
-                        // TODO: Connect logout functionality
-                        console.log("Logout");
-                      }}
+                      onClick={logoutUser}
+                      disabled={isLoggingOut}
                     >
                       <span className="flex h-6 w-6 shrink-0 items-center justify-center">
                         <FiLogOut size={20} />
                       </span>
 
-                      <span>Logout</span>
+                      <span>{isLoggingOut ? "Logging out..." : "Logout"}</span>
                     </Button>
                   </div>
+
+                  {logoutError && (
+                    <p role="alert" className="text-sm text-red-600">
+                      {logoutError}
+                    </p>
+                  )}
                 </div>
               )}
             </div>
