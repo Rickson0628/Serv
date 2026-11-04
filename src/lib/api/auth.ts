@@ -257,6 +257,8 @@ interface GetUserResponse {
   user: AuthenticatedUser;
 }
 
+
+
 export async function getCurrentUser(): Promise<AuthenticatedUser | null> {
   const response = await fetch("/backend/api/auth/me", {
     method: "GET",
@@ -273,4 +275,16 @@ export async function getCurrentUser(): Promise<AuthenticatedUser | null> {
   }
 
   return result.user;
+}
+
+
+export async function logout():Promise<void>{
+  const response = await fetch('/backend/api/auth/logout',{
+    method: "POST",
+  });
+
+  if(!response.ok){
+    throw new Error("Error logging out")
+  };
+
 }
